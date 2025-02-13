@@ -1,0 +1,18 @@
+{
+    "name": "raul/tienda",
+    "description": "tienda en PHP  usando MVC",
+    "autoload": {
+        "psr-4": {
+            "Raul\\Tienda\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "RaulPachecoo",
+            "email": "raulpachecoropero@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
