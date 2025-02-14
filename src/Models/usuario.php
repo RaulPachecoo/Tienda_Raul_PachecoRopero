@@ -148,11 +148,22 @@ class Usuario{
         return $this;
     }
 
+    public static function fromArray(array $data){
+        return new Usuario(
+            $data['id'] ?? null, 
+            $data['nombre'] ?? '',
+            $data['apellidos'] ?? '',
+            $data['email'] ?? '', 
+            $data['password'] ?? '',
+            $data['rol'] ?? '',
+        ); 
+    }
+
     public function desconecta(){
         $this->db->close(); 
     }
 
-    public function crearUsuario(){
+    public function createUsuario(){
         $id = null; 
         $nombre = $this->nombre; 
         $apellidos = $this->apellidos; 
@@ -179,11 +190,12 @@ class Usuario{
 
         $insert->closeCursor(); 
         $this->desconecta();
+        return $result; 
     }
 
     public function login(): mixed {
         try {
-            $datosUsuario = $this->buscarPorEmail($this->getEmail()); 
+            $datosUsuario = $this->getByEmail($this->getEmail()); 
             if ($datosUsuario && password_verify($this->getPassword(), $datosUsuario->password)) {
                 return $datosUsuario;
             }
@@ -193,7 +205,7 @@ class Usuario{
         return false;
     }
 
-    public function buscarPorEmail(string $email): mixed {
+    public function getByEmail(string $email): mixed {
         try {
             $select = $this->db->prepare("SELECT * FROM usuarios WHERE email = :email");
             $select->bindValue(':email', $email, PDO::PARAM_STR);
@@ -223,7 +235,7 @@ class Usuario{
 
         if (empty($this->email) || !filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
             $errores[] = "Email no válido.";
-        } elseif ($this->buscarPorEmail($this->email) !== false) {
+        } elseif ($this->getByEmail($this->email) !== false) {
             $errores[] = "El email ya está registrado.";
         }
 
@@ -242,7 +254,7 @@ class Usuario{
 
         if (empty($this->email) || !filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
             $errores[] = "Email no válido.";
-        } elseif ($this->buscarPorEmail($this->email) === false) {
+        } elseif ($this->getByEmail($this->email) === false) {
             $errores[] = "Este email no está registrado.";
         }
 

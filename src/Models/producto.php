@@ -208,16 +208,16 @@ class Producto
         return $this;
     }
 
-    public function getAll(): array
-    {
+    public  static function getAll(): array{
+        $producto = new Producto(); 
         try {
-            $this->db->consulta("SELECT * FROM productos ORDER BY id DESC");
-            $productos = $this->db->extraer_todos();
+            $producto->db->consulta("SELECT * FROM productos ORDER BY id DESC");
+            $productos = $producto->db->extraer_todos();
             return $productos;
         } catch (PDOException $e) {
             return [];
         } finally {
-            $this->db->close();
+            $producto->db->close();
         }
     }
 
@@ -330,14 +330,16 @@ class Producto
         }
     }
 
-    public function getProductoById(int $id): mixed {
+    public static function getProductoById(int $id): mixed {
+        $producto = new Producto(); 
         try {
-            $stmt = $this->db->prepare("SELECT * FROM productos WHERE id = :id");
+            $stmt = $producto->db->prepare("SELECT * FROM productos WHERE id = :id");
             $stmt->bindValue(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
-            $producto = $stmt->fetch(PDO::FETCH_ASSOC);
+            $productoDetails = $stmt->fetch(PDO::FETCH_ASSOC);
             $stmt->closeCursor();
-            return $producto ?: false;
+            $producto->db->close(); 
+            return $productoDetails ?: false;
         } catch (PDOException) {
             return false;
         }
