@@ -221,7 +221,7 @@ class Producto
         }
     }
 
-    public function crearProducto(string $nombre, string $descripcion, int $categoria, float $precio, int $stock, string $oferta, DateTime $fecha, string $imagen) {
+    public function createProducto(string $nombre, string $descripcion, int $categoria, float $precio, int $stock, string $oferta, DateTime $fecha, string $imagen) {
         try {
             $insert = $this->db->prepare(
                 "INSERT INTO productos (categoria_id, nombre, descripcion, precio, stock, oferta, fecha, imagen) 
@@ -246,4 +246,116 @@ class Producto
             return false;
         }
     }
+
+    public static function getProductosByCategoria(int $categoriaId): array|false {
+        $producto = new self();
+        try {
+            $stmt = $producto->db->prepare(
+                "SELECT * FROM productos WHERE categoria_id = :categoriaId ORDER BY id DESC"
+            );
+            $stmt->bindValue(':categoriaId', $categoriaId, PDO::PARAM_INT);
+            $stmt->execute();
+            $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt->closeCursor();
+            $producto->db->close();
+            return $productos;
+        } catch (PDOException) {
+            return false;
+        }
+    }
+
+    public function getStockById(int $id): array|false {
+        try {
+            $stmt = $this->db->prepare(
+                "SELECT stock FROM productos WHERE id = :id"
+            );
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $stock = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt->closeCursor();
+            return $stock ?: false;
+        } catch (PDOException) {
+            return false;
+        }
+    }
+
+    public function updateStock(int $id, int $nuevoStock): bool {
+        try {
+            $stmt = $this->db->prepare(
+                "UPDATE productos SET stock = :nuevoStock WHERE id = :id"
+            );
+            $stmt->bindValue(':nuevoStock', $nuevoStock, PDO::PARAM_INT);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $stmt->closeCursor();
+            return true;
+        } catch (PDOException) {
+            return false;
+        }
+    }
+
+    public function updateProducto(int $id, int $categoria, string $nombre, string $descripcion, float $precio, int $stock, string $oferta, string $fecha, string $imagen): bool {
+        try {
+            $stmt = $this->db->prepare(
+                "UPDATE productos SET categoria_id = :categoria, nombre = :nombre, descripcion = :descripcion, precio = :precio, stock = :stock, oferta = :oferta, fecha = :fecha, imagen = :imagen WHERE id = :id"
+            );
+            $stmt->bindValue(':categoria', $categoria, PDO::PARAM_INT);
+            $stmt->bindValue(':nombre', $nombre, PDO::PARAM_STR);
+            $stmt->bindValue(':descripcion', $descripcion, PDO::PARAM_STR);
+            $stmt->bindValue(':precio', $precio);
+            $stmt->bindValue(':stock', $stock, PDO::PARAM_INT);
+            $stmt->bindValue(':oferta', $oferta, PDO::PARAM_STR);
+            $stmt->bindValue(':fecha', $fecha, PDO::PARAM_STR);
+            $stmt->bindValue(':imagen', $imagen, PDO::PARAM_STR);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $stmt->closeCursor();
+            $this->db->close();
+            return true;
+        } catch (PDOException) {
+            return false;
+        }
+    }
+
+    public function getImagenById(int $id): mixed {
+        try {
+            $stmt = $this->db->prepare("SELECT imagen FROM productos WHERE id = :id");
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $imagen = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt->closeCursor();
+            return $imagen ?: false;
+        } catch (PDOException) {
+            return false;
+        }
+    }
+
+    public function getProductoById(int $id): mixed {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM productos WHERE id = :id");
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $producto = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt->closeCursor();
+            return $producto ?: false;
+        } catch (PDOException) {
+            return false;
+        }
+    }
+
+    public function deleteProducto(int $id): bool {
+        try {
+            $stmt = $this->db->prepare("DELETE FROM productos WHERE id = :id");
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $stmt->closeCursor();
+            return true;
+        } catch (PDOException) {
+            return false;
+        } finally {
+            $this->db->close();
+        }
+    }
+
+
 }
