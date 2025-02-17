@@ -33,17 +33,21 @@ class Categoria {
         return $this;
     }
 
-    public function getAll(): array|false {
+    public static function getAll(): array {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM categorias ORDER BY id DESC");
+            $db = new DBConnection(); // Crear la conexión correctamente
+            $stmt = $db->prepare("SELECT * FROM categorias ORDER BY id DESC");
             $stmt->execute();
             $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $stmt->closeCursor();
-            return $categorias ?: false;
-        } catch (PDOException) {
-            return false;
+    
+            return $categorias; // Devuelve [] si no hay categorías
+        } catch (PDOException $e) {
+            error_log("Error en getAll(): " . $e->getMessage()); // Registrar el error
+            return []; // Devuelve un array vacío en caso de error
         }
     }
+    
 
     public function createCategoria(string $nombre): bool {
         try {

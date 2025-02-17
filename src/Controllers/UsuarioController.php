@@ -4,6 +4,7 @@ namespace Controllers;
 use Models\Usuario; 
 use Lib\Pages; 
 use Utils\Utils; 
+use Controllers\ErrorController; 
 
 class UsuarioController{
     private Pages $pages; 
@@ -27,7 +28,7 @@ class UsuarioController{
                 $errores = $validacion;
             }
         } else {
-            $_SESSION['registrado'] = "failed";
+            return ErrorController::showError404(); 
         }
     
         $this->pages->render('/usuario/registro', $errores ?? [] ? ['datos' => $registrado ?? [], 'errores' => $errores] : []);
@@ -54,7 +55,7 @@ class UsuarioController{
                 $errores = $validacion;
             }
         } else {
-            $_SESSION['login'] = "failed";
+            return ErrorController::showError404(); 
         }
     
         if (!isset($verify) || !$verify) {
@@ -67,6 +68,11 @@ class UsuarioController{
     }
 
     public function logout(){
+
+        if(!isset($_SESSION['login'])){
+            return ErrorController::accesoDenegado(); 
+        }
+
         Utils::deleteSession('login'); 
 
         header("Location:".BASE_URL); 

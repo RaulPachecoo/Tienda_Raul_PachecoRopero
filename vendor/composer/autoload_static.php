@@ -13,6 +13,10 @@ class ComposerStaticInit91d4a5d2a96550f684fd7af7c0e8e679
     );
 
     public static $prefixLengthsPsr4 = array (
+        'U' => 
+        array (
+            'Utils\\' => 6,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
@@ -21,11 +25,20 @@ class ComposerStaticInit91d4a5d2a96550f684fd7af7c0e8e679
         ),
         'R' => 
         array (
-            'Raul\\Tienda\\' => 12,
+            'Routes\\' => 7,
         ),
         'P' => 
         array (
             'PhpOption\\' => 10,
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
+        'M' => 
+        array (
+            'Models\\' => 7,
+        ),
+        'L' => 
+        array (
+            'Lib\\' => 4,
         ),
         'G' => 
         array (
@@ -35,9 +48,17 @@ class ComposerStaticInit91d4a5d2a96550f684fd7af7c0e8e679
         array (
             'Dotenv\\' => 7,
         ),
+        'C' => 
+        array (
+            'Controllers\\' => 12,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Utils\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Utils',
+        ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
@@ -50,13 +71,25 @@ class ComposerStaticInit91d4a5d2a96550f684fd7af7c0e8e679
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
-        'Raul\\Tienda\\' => 
+        'Routes\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src',
+            0 => __DIR__ . '/../..' . '/src/Routes',
         ),
         'PhpOption\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'Models\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Models',
+        ),
+        'Lib\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Lib',
         ),
         'GrahamCampbell\\ResultType\\' => 
         array (
@@ -65,6 +98,10 @@ class ComposerStaticInit91d4a5d2a96550f684fd7af7c0e8e679
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
+        ),
+        'Controllers\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Controllers',
         ),
     );
 
