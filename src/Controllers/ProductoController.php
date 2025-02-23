@@ -136,7 +136,7 @@ class ProductoController
 
         $producto = new Producto();
         if (!$producto->deleteProducto($id)) {
-            return ErrorController::showError500("Error al eliminar el producto.");
+            ErrorController::showError500("Error al eliminar el producto.");
         }
 
         $productos = self::getProductos();

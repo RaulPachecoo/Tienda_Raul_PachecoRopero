@@ -1,18 +1,11 @@
 <?php
 
-use Dotenv\Dotenv;
+define('SERVIDOR', 'localhost');
+define('USUARIO', 'root');
+define('PASS', '');
+define('BASE_DATOS', 'tienda');
 
-// Cargar el archivo .env
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+define('BASE_URL', 'http://localhost/DWES/Tienda_Raul_PachecoRopero/');
 
-// Definir constantes usando los valores del .env
-define('SERVIDOR', $_ENV['DB_HOST'] ?? 'localhost');
-define('USUARIO', $_ENV['DB_USER'] ?? 'root');
-define('PASS', $_ENV['DB_PASSWORD'] ?? '');
-define('BASE_DATOS', $_ENV['DB_NAME'] ?? 'tienda');
-
-// Otras configuraciones
-define('BASE_URL', $_ENV['BASE_URL'] ?? 'http://localhost/DWES/Tienda_Ra%c3%bal_PachecoRopero/');
-define('CONTROLLER_DEFAULT', $_ENV['CONTROLLER_DEFAULT'] ?? 'usuarioController');
-define('ACTION_DEFAULT', $_ENV['ACTION_DEFAULT'] ?? 'registro');
+define('CONTROLLER_DEFAULT', 'usuarioController');
+define('ACTION_DEFAULT', 'registro');

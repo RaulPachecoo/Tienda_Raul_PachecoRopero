@@ -9,11 +9,62 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
+        /* Estilo personalizado para el footer */
+        footer {
+            background-color: black;
+            color: white;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #B52BD8; /* Color de enlace al pasar el cursor */
+        }
+
+        footer h5 {
+            color: white; /* Color blanco para los encabezados */
+            font-weight: bold;
+        }
+
+        footer .bi {
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        footer .bi:hover {
+            color: #B52BD8; /* Cambiar color de los iconos al pasar el cursor */
+        }
+
+        footer p {
+            color: white; /* Color blanco para el texto del footer */
+        }
+
+        footer .container {
+            max-width: 1200px;
+        }
+    </style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <footer class="bg-dark text-white py-4 mt-auto">
+
+    <!-- Contenido de la página -->
+
+    <footer class="text-white py-4 mt-auto">
         <div class="container text-center">
             <div class="row">
                 <div class="col-md-4 mb-3">

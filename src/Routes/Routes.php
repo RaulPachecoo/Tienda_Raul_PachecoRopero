@@ -12,17 +12,21 @@ use Controllers\PedidoController;
 
 class Routes {
     public static function index() {
-        Router::add('GET', '/', function () {
+        Router::add('GET', '', function () {
             return (new DashboardController())->index();
         });
+        // Router::add('GET', '/', function () {
+        //     return (new DashboardController())->index();
+        // });
+        
         Router::add('GET', 'Usuario/registro', function () {
+            return (new UsuarioController())->registro();
+        });
+        Router::add('POST', 'Usuario/registro', function () {
             return (new UsuarioController())->registro();
         });
         Router::add('GET', 'Usuario/login', function () {
             return (new UsuarioController())->login();
-        });
-        Router::add('POST', 'Usuario/registro', function () {
-            return (new UsuarioController())->registro();
         });
         Router::add('POST', 'Usuario/login', function () {
             return (new UsuarioController())->login();
@@ -111,6 +115,7 @@ class Routes {
         Router::add('POST', 'Carrito/vaciarCarrito', function () {
             return (new CarritoController())->vaciarCarrito();
         });
+        
 
         Router::dispatch();
     }
