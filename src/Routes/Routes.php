@@ -58,6 +58,9 @@ class Routes {
         Router::add('GET', 'Categoria/mostrarProductosCategoria?id=:id', function ($id) {
             return (new CategoriaController())->showProductosByCategoria($id);
         });
+        Router::add('GET', 'Categoria/mostrarProductosCategoria', function () {
+            return (new CategoriaController())->showProductosByCategoria((int)$_GET['id']);
+        });
         Router::add('GET', 'Producto/eliminarProducto?id=:id', function ($id) {
             return (new ProductoController())->deleteProducto($id);
         });

@@ -32,7 +32,8 @@ class CarritoController
     public function addCarrito(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->validarDatosCarrito()) {
-            return ErrorController::showError400("Datos inválidos para añadir al carrito.");
+            ErrorController::showError400("Datos inválidos para añadir al carrito.");
+            return; 
         }
 
         $_SESSION['carrito'] = $_SESSION['carrito'] ?? [];
@@ -44,14 +45,16 @@ class CarritoController
 
         $producto = Producto::getProductoById($productoId);
         if (!$producto || !$cantidad <= $producto['stock']) {
-            return ErrorController::showError400("No hay suficiente stock.");
+            ErrorController::showError400("No hay suficiente stock.");
+            return; 
         }
 
         if ($this->containProducto($productoId, $precio)) {
             if ($_SESSION['carrito'][$productoId]['cantidad'] + $cantidad <= $producto['stock']) {
                 $_SESSION['carrito'][$productoId]['cantidad'] += $cantidad;
             } else {
-                return ErrorController::showError400("No hay suficiente stock disponible.");
+                ErrorController::showError400("No hay suficiente stock disponible.");
+                return; 
             }
         } else {
             $_SESSION['carrito'][$productoId] = [
@@ -86,19 +89,22 @@ class CarritoController
     private function updateCantidad(int $cantidad): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_POST['producto_id'])) {
-            return ErrorController::showError400("No se especificó el producto.");
+            ErrorController::showError400("No se especificó el producto.");
+            return; 
         }
 
         $productoId = (int) $_POST['producto_id'];
 
         if (!isset($_SESSION['carrito'][$productoId])) {
-            return ErrorController::showError404("El producto no está en el carrito.");
+            ErrorController::showError404("El producto no está en el carrito.");
+            return; 
         }
 
         $producto = Producto::getProductoById($productoId);
 
         if (!$producto) {
-            return ErrorController::showError404("El producto no existe.");
+            ErrorController::showError404("El producto no existe.");
+            return; 
         }
 
         $nuevaCantidad = $_SESSION['carrito'][$productoId]['cantidad'] + $cantidad;
@@ -107,7 +113,8 @@ class CarritoController
         } elseif ($nuevaCantidad <= 0) {
             unset($_SESSION['carrito'][$productoId]);
         } else {
-            return ErrorController::showError400("No hay suficiente stock disponible.");
+            ErrorController::showError400("No hay suficiente stock disponible.");
+            return; 
         }
 
         $this->showCarrito();
@@ -126,7 +133,8 @@ class CarritoController
     public function removeProducto(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_POST['producto_id'])) {
-            return ErrorController::showError400("No se especificó el producto a eliminar.");
+            ErrorController::showError400("No se especificó el producto a eliminar.");
+            return; 
         }
 
         $productoId = (int) $_POST['producto_id'];

@@ -1,30 +1,11 @@
-<?php use Controllers\ProductoController;
-
-$productos = ProductoController::getProductos();
-?>
-
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Inicio</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        body {
-            background-color: #000; /* Fondo negro */
-            color: #fff; /* Texto blanco */
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="container py-5">
-        <h1 class="text-light text-center mb-5">Bienvenido a nuestra tienda</h1>
+<?php
+if (empty($productos)): ?>
+    <div class="container text-center mt-5">
+        <h2 class="text-light">No hay productos en esta categoría.</h2>
+    </div>
+<?php else: ?>
+    <div class="container mt-5">
+        <h1 class="text-light text-center mb-4">Lista de Productos</h1>
         <div class="row">
             <?php foreach ($productos as $producto): ?>
                 <div class="col-md-4 mb-4">
@@ -49,10 +30,4 @@ $productos = ProductoController::getProductos();
             <?php endforeach; ?>
         </div>
     </div>
-
-    <!-- Bootstrap JS (para interactividad) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-
-</html>
+<?php endif; ?>

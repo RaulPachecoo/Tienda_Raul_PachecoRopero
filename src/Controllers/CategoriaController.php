@@ -49,27 +49,24 @@ class CategoriaController{
     }
 
     public function showProductosByCategoria(int $id) {
-        $producto = Producto::getProductosByCategoria($id);
+        $productos = Producto::getProductosByCategoria($id);
 
-        if (!$producto) {
-            ErrorController::showError404();
+        if ($productos === false || empty($productos)) {
+            ErrorController::showError404("No hay productos en esta categoría.");
             return;
         }
 
-        $this->pages->render('producto/lista', ['productos' => $producto]); 
+        $this->pages->render('producto/lista', ['productos' => $productos], true, true);
     }
 
     public function showCategorias() {
-        $this->carrito->comprobarLogin(); 
-
-        $categorias = Categoria::getAll();
-
-        if ($categorias === false) {
-            ErrorController::showError500("Error al obtener las categorías.");
-            return;
+        if (isset($_GET['id'])) {
+            $categoriaId = $_GET['id'];
+            $producto = Producto::getProductosByCategoria($categoriaId);
+            $this->pages->render('Producto/lista', ['productos' => $producto]);
+        } else {
+            $this->pages->render('error');
         }
-
-        $this->pages->render('categoria/listarCategorias', ['categoria' => $categorias]); 
     }
 
     public function modificarCategoria(int $id) {
@@ -126,3 +123,4 @@ class CategoriaController{
     }
     
 }
+?>

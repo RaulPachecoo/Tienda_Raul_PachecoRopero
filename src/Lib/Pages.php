@@ -11,28 +11,41 @@ class Pages {
      * @param bool $loadHeader Indica si debe cargar el header.
      * @param bool $loadFooter Indica si debe cargar el footer.
      */
-    public function render(string $pageName, array $params = null, bool $loadHeader = true, bool $loadFooter = true): void {
-        // Extraer variables de $params si no está vacío
-        if (!empty($params)) {
-            foreach ($params as $name => $value) {
-                $$name = $value;
-            }
-        }
-
+    public function render(string $pageName, array $params = [], bool $loadHeader = true, bool $loadFooter = true): void {
         // Definir la ruta base de las vistas
         $baseViewPath = __DIR__ . '/../Views/';
-
-        // Incluir archivos con verificación de existencia solo si se debe cargar
+        
+        // Verificar si la vista existe antes de incluirla
+        $viewPath = $baseViewPath . ltrim($pageName, '/') . ".php";
+        
+        if (!file_exists($viewPath)) {
+            // Manejo de error si la vista no existe
+            echo "Error: La vista {$pageName} no existe.";
+            return;
+        }
+    
         if ($loadHeader) {
             $this->includeFile($baseViewPath . "layout/header.php");
         }
-
-        $this->includeFile($baseViewPath . ltrim($pageName, '/').".php");
+    
+        // Pasar las variables de $params a la vista explícitamente
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                $$key = $value; // Asignación explícita de variables
+            }
+        }
+    
+        // Incluir la vista
+        include $viewPath;
+    
+        
 
         if ($loadFooter) {
             $this->includeFile($baseViewPath . "layout/footer.php");
         }
     }
+    
+
 
     /**
      * Incluye un archivo si existe, de lo contrario muestra un error.
@@ -47,7 +60,4 @@ class Pages {
         }
     }
 }
-
-
-
 ?>
