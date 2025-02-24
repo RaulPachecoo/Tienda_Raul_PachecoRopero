@@ -26,6 +26,11 @@ class PedidoController{
     public function createPedido() {
         $this->carrito->comprobarLogin(); 
 
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $this->pages->render('pedidos/formulario');
+            return;
+        }
+
         if (empty($_SESSION['carrito'])) {
             return ErrorController::showError500("El carrito está vacío.");
         }
@@ -47,7 +52,8 @@ class PedidoController{
             $cantidad = $producto['cantidad']; 
 
             $productoModel = new Producto();
-            $stock = $productoModel->getStockById($idProducto); 
+            $stockData = $productoModel->getStockById($idProducto); 
+            $stock = $stockData['stock']; // Extract the stock value
 
             if ($stock < $cantidad) {
                 return ErrorController::showError500("No hay stock suficiente para el producto: {$producto['nombre']}.");
@@ -71,9 +77,8 @@ class PedidoController{
             return ErrorController::showError500("Error al crear el pedido.");
         }
 
-        unset($_SESSION['carrito']);
-        header("Location: " . BASE_URL . "Pedido/mostrarPedidos");
-        exit;
+        // Mostrar la página de pedidos
+        $this->showPedidos();
     }
 
     public function completarPedido(int $id) {
@@ -94,7 +99,7 @@ class PedidoController{
 
         $this->sendConfirmationEmail($id, $productosPedido);
 
-        header("Location: " . BASE_URL . "Pedido/mostrarPedidos");
+        header("Location: " . BASE_URL . "pedidos/mostrarPedidos");
         exit;
     }
 
@@ -105,7 +110,7 @@ class PedidoController{
 
         try {
             $mail->isSMTP();
-            $mail->SMTPDebug = 0;
+            $mail->SMTPDebug = 2;
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = getenv('SMTP_USER');
@@ -157,7 +162,7 @@ class PedidoController{
         }
 
         $usuarioId = $_SESSION['login']->id; 
-        $esAdministrador = $_SESSION['login']->rol === 'Admin';
+        $esAdministrador = $_SESSION['login']->rol === 'admin';
 
         $pedidos = $esAdministrador ? $this->pedido->getAll() : $this->pedido->getPedidosByUsuario($usuarioId);
 

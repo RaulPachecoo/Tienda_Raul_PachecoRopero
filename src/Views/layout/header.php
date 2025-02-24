@@ -1,7 +1,6 @@
 <?php
-use Controllers\CategoriaController;
+use Controllers\CategoriaController; 
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -12,6 +11,8 @@ use Controllers\CategoriaController;
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <style>
         body {
@@ -103,7 +104,7 @@ use Controllers\CategoriaController;
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="collapse navbar-collapse" id="navbarNav"></div>
                     <ul class="navbar-nav me-auto">
                         <?php if (!isset($_SESSION['login']) || $_SESSION['login'] == 'failed'): ?>
                             <li class="nav-item">
@@ -122,15 +123,22 @@ use Controllers\CategoriaController;
                                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Usuario/registro/">Registrar Usuario</a></li>
                             <?php else: ?>
                                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Pedido/mostrarPedidos/">Mis Pedidos</a></li>
-                                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Carrito/mostrarCarrito/">Carrito</a></li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<?= BASE_URL ?>Carrito/mostrarCarrito/">
+                                        <i class="fas fa-shopping-cart"></i> <!-- FontAwesome icon -->
+                                    </a>
+                                </li>
                             <?php endif; ?>
                             <li class="nav-item"><a class="nav-link text-danger" href="<?= BASE_URL ?>Usuario/logout/">Cerrar Sesión</a></li>
                         <?php endif; ?>
                     </ul>
 
                     <?php if (isset($_SESSION['login']) && $_SESSION['login'] != 'failed'): ?>
-                        <span class="navbar-text text-light">
-                            <?= $_SESSION['login']->nombre ?> <?= $_SESSION['login']->apellidos ?>
+                        <!-- Enlace para ir a modificar datos de usuario -->
+                        <span class="ms-5 navbar-text text-light">
+                            <a href="<?= BASE_URL ?>Usuario/modificarDatos?id=<?= $_SESSION['login']->id ?>" class="nav-link">
+                                <?= $_SESSION['login']->nombre ?> <?= $_SESSION['login']->apellidos ?>
+                            </a>
                         </span>
                     <?php endif; ?>
                 </div>
@@ -140,7 +148,7 @@ use Controllers\CategoriaController;
 
     <?php $categorias = CategoriaController::getCategorias(); ?>
 
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg"></nav>
         <div class="container">
             <div class="collapse navbar-collapse" id="navbarCategorias">
                 <ul class="navbar-nav me-auto navbar-categorias">

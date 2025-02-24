@@ -44,7 +44,7 @@ class CarritoController
         $nombre = trim($_POST['nombre']);
 
         $producto = Producto::getProductoById($productoId);
-        if (!$producto || !$cantidad <= $producto['stock']) {
+        if (!$producto || $cantidad > $producto['stock']) {
             ErrorController::showError400("No hay suficiente stock.");
             return; 
         }
@@ -62,6 +62,8 @@ class CarritoController
                 'cantidad' => $cantidad,
                 'precio' => $precio,
                 'nombre' => $nombre,
+                'imagen' => $producto['imagen'], // Añadir la imagen del producto
+                'stock' => $producto['stock'], // Ensure stock is included
             ];
         }
 
@@ -71,7 +73,7 @@ class CarritoController
     public function showCarrito(): void
     {
         $totalCarrito = array_sum(array_map(fn($item) => $item['precio'] * $item['cantidad'], $_SESSION['carrito'] ?? []));
-        $this->pages->render('carrito/showCarrito', ['totalCarrito' => $totalCarrito]);
+        $this->pages->render('carrito/mostrarCarrito', ['totalCarrito' => $totalCarrito]);
     }
 
     private function containProducto(int $productoId, float $precio): bool

@@ -167,6 +167,27 @@ class Usuario
         $this->db->close();
     }
 
+    public function getById(int $id): mixed
+    {
+        try {
+            $select = $this->db->prepare("SELECT * FROM usuarios WHERE id = :id");
+            $select->bindValue(':id', $id, PDO::PARAM_INT);
+            $select->execute();
+
+            // Comprobar si se encuentra el usuario y devolverlo como un objeto Usuario
+            if ($select->rowCount() === 1) {
+                $data = $select->fetch(PDO::FETCH_ASSOC);
+                return self::fromArray($data); // Convierte el array a un objeto Usuario
+            }
+
+            return false; // Si no se encuentra el usuario
+        } catch (PDOException $e) {
+            error_log("Error al buscar usuario por id: " . $e->getMessage());
+            return false;
+        }
+    }
+
+
     public function createUsuario()
     {
         $id = null;
@@ -279,5 +300,51 @@ class Usuario
         }
 
         return empty($errores) ? true : $errores;
+    }
+
+    public function modificarDatosUsuario(int $usuarioId, array $datos): bool
+    {
+        // Preparar la consulta para modificar solo los datos permitidos (sin modificar el rol)
+        $query = "UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, email = :email WHERE id = :id";
+
+        try {
+            // Preparamos la consulta
+            $stmt = $this->db->prepare($query);
+            // Vinculamos los parámetros
+            $stmt->bindValue(':nombre', $datos['nombre'], PDO::PARAM_STR);
+            $stmt->bindValue(':apellidos', $datos['apellidos'], PDO::PARAM_STR);
+            $stmt->bindValue(':email', $datos['email'], PDO::PARAM_STR);
+            $stmt->bindValue(':id', $usuarioId, PDO::PARAM_INT);
+
+            // Ejecutar la consulta
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error al modificar los datos del usuario: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function modificarDatosAdmin(int $usuarioId, array $datos): bool
+    {
+
+        // Preparar la consulta para modificar todos los datos, incluyendo el rol
+        $query = "UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, email = :email, rol = :rol WHERE id = :id";
+
+        try {
+            // Preparamos la consulta
+            $stmt = $this->db->prepare($query);
+            // Vinculamos los parámetros
+            $stmt->bindValue(':nombre', $datos['nombre'], PDO::PARAM_STR);
+            $stmt->bindValue(':apellidos', $datos['apellidos'], PDO::PARAM_STR);
+            $stmt->bindValue(':email', $datos['email'], PDO::PARAM_STR);
+            $stmt->bindValue(':rol', $datos['rol'], PDO::PARAM_STR);
+            $stmt->bindValue(':id', $usuarioId, PDO::PARAM_INT);
+
+            // Ejecutar la consulta
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error al modificar los datos del usuario: " . $e->getMessage());
+            return false;
+        }
     }
 }

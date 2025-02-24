@@ -10,21 +10,36 @@ use Lib\Router;
 use Controllers\CarritoController;
 use Controllers\PedidoController;
 
-class Routes {
-    public static function index() {
+class Routes
+{
+    public static function index()
+    {
         Router::add('GET', '', function () {
             return (new DashboardController())->index();
         });
-        // Router::add('GET', '/', function () {
-        //     return (new DashboardController())->index();
-        // });
-        
+
         Router::add('GET', 'Usuario/registro', function () {
             return (new UsuarioController())->registro();
         });
         Router::add('POST', 'Usuario/registro', function () {
             return (new UsuarioController())->registro();
         });
+        Router::add('GET', 'Usuario/modificarDatos?id=:id', function ($id) {
+            return (new UsuarioController())->modificarDatos($id);
+        });
+
+        Router::add('POST', 'Usuario/modificarDatos?id=:id', function ($id) {
+            return (new UsuarioController())->modificarDatos($id);
+        });
+
+        Router::add('GET', 'Usuario/modificarDatos', function () {
+            return (new UsuarioController())->modificarDatos((int)$_GET['id']);
+        });
+
+        Router::add('POST', 'Usuario/modificarDatos', function () {
+            return (new UsuarioController())->modificarDatos((int)$_GET['id']);
+        });
+
         Router::add('GET', 'Usuario/login', function () {
             return (new UsuarioController())->login();
         });
@@ -118,9 +133,8 @@ class Routes {
         Router::add('POST', 'Carrito/vaciarCarrito', function () {
             return (new CarritoController())->vaciarCarrito();
         });
-        
+
 
         Router::dispatch();
     }
 }
-?>
