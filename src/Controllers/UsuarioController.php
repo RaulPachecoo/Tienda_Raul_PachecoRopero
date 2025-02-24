@@ -170,6 +170,9 @@ class UsuarioController
                 // Si los datos se han actualizado correctamente
                 if ($actualizado) {
                     $_SESSION['mensaje'] = "Los datos se han actualizado correctamente.";
+                    // Update session data
+                    $_SESSION['login']->nombre = $datos['nombre'];
+                    $_SESSION['login']->apellidos = $datos['apellidos'];
                     // Ensure no output before this line
                     if (!headers_sent()) {
                         header('Location: ' . BASE_URL . 'Usuario/modificarDatos?id=' . $usuarioId); // Recargar la página
