@@ -240,7 +240,6 @@ class Producto
             $insert->closeCursor();
             $this->db->close();
             
-            header("Location: " . BASE_URL);
             return true;
         } catch (PDOException $e) {
             return false;

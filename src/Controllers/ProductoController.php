@@ -32,47 +32,40 @@ class ProductoController
 
         $productos = $this->getProductos();
 
-        $this->pages->render('productos/gestionarProductos', ['productos' => $productos]);
+        $this->pages->render('Producto/gestionarProductos', ['productos' => $productos]);
     }
 
     public function createProducto() {
         $this->carrito->comprobarLogin();
 
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['nombre'], $_POST['descripcion'], $_POST['categoria'], $_POST['precio'], $_POST['stock'], $_POST['oferta'], $_POST['fecha'])) {
-            return ErrorController::showError404();
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $this->pages->render('producto/crearProducto');
+            return;
         }
 
-        $nombre = $_POST['nombre'];
-        $descripcion = $_POST['descripcion'];
-        $categoria = intval($_POST['categoria']);
-        $precio = $_POST['precio'];
-        $stock = $_POST['stock'];
-        $oferta = $_POST['oferta'];
-        $fecha = $_POST['fecha'];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nombre'], $_POST['descripcion'], $_POST['categoria'], $_POST['precio'], $_POST['stock'], $_POST['oferta'], $_POST['fecha'], $_POST['imagen'])) {
+            $nombre = $_POST['nombre'];
+            $descripcion = $_POST['descripcion'];
+            $categoria = intval($_POST['categoria']);
+            $precio = $_POST['precio'];
+            $stock = $_POST['stock'];
+            $oferta = $_POST['oferta'];
+            $fecha = new \DateTime($_POST['fecha']); // Convertir la cadena de fecha a un objeto DateTime
+            $imagen = $_POST['imagen']; // Obtener la URL de la imagen
 
-        if (!is_numeric($precio) || !is_numeric($stock)) {
-            return ErrorController::showError500("El precio y el stock deben ser números.");
-        }
-
-        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-            $imagen = $_FILES['imagen'];
-            $nomArchivo = uniqid() . '_' . $imagen['name'];
-            $rutaDestino = __DIR__ . '/../../public/img/' . $nomArchivo;
-
-            if (!move_uploaded_file($imagen['tmp_name'], $rutaDestino)) {
-                return ErrorController::showError500("Error al subir la imagen.");
+            if (!is_numeric($precio) || !is_numeric($stock)) {
+                return ErrorController::showError500("El precio y el stock deben ser números.");
             }
-            $imagen = $nomArchivo;
-        } else {
-            return ErrorController::showError500("Imagen no válida.");
+
+            if (!$this->producto->createProducto($nombre, $descripcion, $categoria, $precio, $stock, $oferta, $fecha, $imagen)) {
+                return ErrorController::showError500("Error al crear el producto.");
+            }
+
+            $this->pages->render('producto/crearProducto');
+            exit;
         }
 
-        if (!$this->producto->createProducto($nombre, $descripcion, $categoria, $precio, $stock, $oferta, $fecha, $imagen)) {
-            return ErrorController::showError500("Error al crear el producto.");
-        }
-
-        header('Location: /producto/gestionarProductos');
-        exit;
+        return ErrorController::showError404();
     }
 
     public function modificarProducto($id){
@@ -96,8 +89,7 @@ class ProductoController
 
         $nombre = $_POST['nombre'];
         $descripcion = $_POST['descripcion'];
-        $categoria = $_POST['categoria'];
-        $categoria = intval($categoria);
+        $categoria = intval($_POST['categoria']); // Convertir a entero
         $precio = $_POST['precio'];
         $stock = $_POST['stock'];
         $oferta = $_POST['oferta'];
@@ -117,12 +109,12 @@ class ProductoController
             if (!move_uploaded_file($imagen['tmp_name'], $rutaDestino)) {
                 return ErrorController::showError500("Error al subir la imagen.");
             }
-            $imagen = $nomArchivo;
+            $imagen = $nomArchivo; // Asignar la ruta del archivo subido
         } else {
-            $imagen = $this->producto->getImagenById($id);
+            $imagen = $this->producto->getImagenById($id)['imagen']; // Obtener la URL de la imagen existente
         }
 
-        if (!$this->producto->updateProducto($id, $nombre, $descripcion, $categoria, $precio, $stock, $oferta, $fecha, $imagen)) {
+        if (!$this->producto->updateProducto($id, $categoria, $nombre, $descripcion, $precio, $stock, $oferta, $fecha, $imagen)) {
             return ErrorController::showError500("Error al actualizar el producto.");
         }
 
@@ -130,16 +122,16 @@ class ProductoController
         $this->pages->render('producto/gestionarProductos', ['productos' => $productos]);
     }
 
-    public function deleteProducto(int $id): void
-    {
-        $this->carrito->comprobarLogin();
+        public function deleteProducto(int $id): void
+        {
+            $this->carrito->comprobarLogin();
 
-        $producto = new Producto();
-        if (!$producto->deleteProducto($id)) {
-            ErrorController::showError500("Error al eliminar el producto.");
+            $producto = new Producto();
+            if (!$producto->deleteProducto($id)) {
+                ErrorController::showError500("Error al eliminar el producto.");
+            }
+
+            $productos = self::getProductos();
+            $this->pages->render('producto/gestionarProductos', ['productos' => $productos]);
         }
-
-        $productos = self::getProductos();
-        $this->pages->render('producto/gestionarProductos', ['productos' => $productos]);
-    }
 }

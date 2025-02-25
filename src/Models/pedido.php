@@ -160,5 +160,32 @@ class Pedido {
     
         return [];
     }
+
+    public function getPedidoById(int $pedidoId) {
+        try {
+            // Preparar la consulta SQL para obtener un pedido por su ID, incluyendo email y nombre del usuario
+            $stmt = $this->db->prepare("SELECT pedidos.*, usuarios.email, usuarios.nombre 
+                                        FROM pedidos 
+                                        JOIN usuarios ON pedidos.usuario_id = usuarios.id 
+                                        WHERE pedidos.id = :pedidoId LIMIT 1");
+            $stmt->bindValue(':pedidoId', $pedidoId, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            // Obtener el pedido si existe
+            $pedido = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt->closeCursor();
+    
+            // Si no se encuentra el pedido, devolver false
+            if ($pedido === false) {
+                return false;
+            }
+    
+            return $pedido;
+    
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+    
     
 }

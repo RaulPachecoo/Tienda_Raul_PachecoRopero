@@ -117,7 +117,7 @@ use Controllers\CategoriaController;
                             <?php if ($_SESSION['login']->rol === "admin"): ?>
                                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Pedido/mostrarPedidos/">Gestionar Pedidos</a></li>
                                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Producto/gestionarProductos/">Gestionar Productos</a></li>
-                                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Producto/crearProducto/">Añadir Producto</a></li>
+                                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Producto/crearProducto/">Crear Producto</a></li>
                                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Categoria/mostrarCategorias/">Gestionar Categorías</a></li>
                                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Categoria/crearCategoria/">Añadir Categoría</a></li>
                                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Usuario/registro/">Registrar Usuario</a></li>

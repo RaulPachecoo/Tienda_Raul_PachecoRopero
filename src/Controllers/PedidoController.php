@@ -98,28 +98,40 @@ class PedidoController{
         }
 
         $this->sendConfirmationEmail($id, $productosPedido);
+        $usuarioId = $_SESSION['login']->id; 
+        $esAdministrador = $_SESSION['login']->rol === 'admin';
+        $pedidos = $esAdministrador ? $this->pedido->getAll() : $this->pedido->getPedidosByUsuario($usuarioId);
+        $this->pages->render('pedidos/mostrarPedidos', ['pedidos' => $pedidos]);
 
-        header("Location: " . BASE_URL . "pedidos/mostrarPedidos");
         exit;
     }
 
     private function sendConfirmationEmail(int $pedidoId, $productos) {
         $this->carrito->comprobarLogin(); 
 
+        // Obtener el correo electrónico del usuario que realizó el pedido
+        $pedido = $this->pedido->getPedidoById($pedidoId);
+
+        if (!$pedido) {
+            return ErrorController::showError500("Pedido no encontrado.");
+        }
+
+        $usuarioEmail = $pedido['email'];
+        $usuarioNombre = $pedido['nombre'];
+
         $mail = new PHPMailer(true); 
 
         try {
             $mail->isSMTP();
-            $mail->SMTPDebug = 2;
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = getenv('SMTP_USER');
-            $mail->Password = getenv('SMTP_PASS');
+            $mail->Username = 'raulpachecoropero555@gmail.com';
+            $mail->Password = 'mbmhjooikomdahdo';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port = 465;
 
-            $mail->setFrom('raulpachecoropero555@gmail.com', 'La tienda de Raúl'); 
-            $mail->addAddress($_SESSION['login']->email, $_SESSION['login']->nombre); 
+            $mail->setFrom('raulpachecoropero555@gmail.com', 'Car Shop'); 
+            $mail->addAddress($usuarioEmail, $usuarioNombre); 
 
             // Construcción del cuerpo del correo
             $body = '<h3>Gracias por comprar en nuestra tienda</h3>';

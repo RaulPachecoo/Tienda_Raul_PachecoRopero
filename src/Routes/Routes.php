@@ -27,19 +27,15 @@ class Routes
         Router::add('GET', 'Usuario/modificarDatos?id=:id', function ($id) {
             return (new UsuarioController())->modificarDatos($id);
         });
-
         Router::add('POST', 'Usuario/modificarDatos?id=:id', function ($id) {
             return (new UsuarioController())->modificarDatos($id);
         });
-
         Router::add('GET', 'Usuario/modificarDatos', function () {
             return (new UsuarioController())->modificarDatos((int)$_GET['id']);
         });
-
         Router::add('POST', 'Usuario/modificarDatos', function () {
             return (new UsuarioController())->modificarDatos((int)$_GET['id']);
         });
-
         Router::add('GET', 'Usuario/login', function () {
             return (new UsuarioController())->login();
         });
@@ -76,20 +72,29 @@ class Routes
         Router::add('GET', 'Categoria/mostrarProductosCategoria', function () {
             return (new CategoriaController())->showProductosByCategoria((int)$_GET['id']);
         });
-        Router::add('GET', 'Producto/eliminarProducto?id=:id', function ($id) {
-            return (new ProductoController())->deleteProducto($id);
+        Router::add('GET', 'Producto/eliminarProducto', function () {
+            return (new ProductoController())->deleteProducto((int)$_GET['id']);
         });
         Router::add('GET', 'Producto/modificarProducto?id=:id', function ($id) {
-            return (new ProductoController())->modificarProducto($id);
+            return (new ProductoController())->modificarProducto((int)$_GET['id']);
         });
         Router::add('POST', 'Producto/modificarProducto?id=:id', function ($id) {
-            return (new ProductoController())->modificarProducto($id);
+            return (new ProductoController())->modificarProducto((int)$_GET['id']);
         });
-        Router::add('GET', 'Producto/gestionarProductos', function () {
-            return (new ProductoController())->gestionarProductos();
+        Router::add('GET', 'Producto/modificarProducto', function () {
+            return (new ProductoController())->modificarProducto((int)$_GET['id']);
         });
         Router::add('POST', 'Producto/actualizarProducto?id=:id', function ($id) {
             return (new ProductoController())->updateProducto($id);
+        });
+        Router::add('POST', 'Producto/actualizarProducto', function () {
+            return (new ProductoController())->updateProducto((int)$_GET['id']);
+        });
+        Router::add('POST', 'Producto/eliminarProducto?id=:id', function ($id) {
+            return (new ProductoController())->deleteProducto($id);
+        });
+        Router::add('GET', 'Producto/gestionarProductos', function () {
+            return (new ProductoController())->gestionarProductos();
         });
         Router::add('GET', 'Producto/crearProducto', function () {
             return (new ProductoController())->createProducto();
@@ -119,7 +124,10 @@ class Routes
             return (new PedidoController())->showPedidos();
         });
         Router::add('GET', 'Pedido/completarPedido?id=:id', function ($id) {
-            return (new PedidoController())->completarPedido($id);
+            return (new PedidoController())->completarPedido((int)$_GET['id']);
+        });
+        Router::add('GET', 'Pedido/completarPedido', function () {
+            return (new PedidoController())->completarPedido((int)$_GET['id']);
         });
         Router::add('POST', 'Carrito/anadirCantidad', function () {
             return (new CarritoController())->addCantidad();
