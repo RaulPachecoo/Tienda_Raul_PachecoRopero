@@ -45,7 +45,7 @@ class UsuarioController
         }
 
         // Renderizamos la vista sin el header ni el footer
-        $this->pages->render('/usuario/registro', ['datos' => $registrado, 'errores' => $errores], false, false);
+        $this->pages->render('usuario/registro', ['datos' => $registrado, 'errores' => $errores], false, false);
     }
 
 

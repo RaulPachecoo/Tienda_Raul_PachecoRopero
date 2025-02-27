@@ -43,7 +43,7 @@ class ProductoController
             return;
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nombre'], $_POST['descripcion'], $_POST['categoria'], $_POST['precio'], $_POST['stock'], $_POST['oferta'], $_POST['fecha'], $_POST['imagen'])) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nombre'], $_POST['descripcion'], $_POST['categoria'], $_POST['precio'], $_POST['stock'], $_POST['oferta'], $_POST['fecha'])) {
             $nombre = $_POST['nombre'];
             $descripcion = $_POST['descripcion'];
             $categoria = intval($_POST['categoria']);
@@ -51,10 +51,21 @@ class ProductoController
             $stock = $_POST['stock'];
             $oferta = $_POST['oferta'];
             $fecha = new \DateTime($_POST['fecha']); // Convertir la cadena de fecha a un objeto DateTime
-            $imagen = $_POST['imagen']; // Obtener la URL de la imagen
 
             if (!is_numeric($precio) || !is_numeric($stock)) {
                 return ErrorController::showError500("El precio y el stock deben ser números.");
+            }
+
+            if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+                $imagen = $_FILES['imagen'];
+                $nomArchivo = uniqid() . '_' . $imagen['name'];
+                $rutaDestino = __DIR__ . '/../../public/imgs/' . $nomArchivo;
+                if (!move_uploaded_file($imagen['tmp_name'], $rutaDestino)) {
+                    return ErrorController::showError500("Error al subir la imagen.");
+                }
+                $imagen = $nomArchivo;
+            } else {
+                $imagen = null;
             }
 
             if (!$this->producto->createProducto($nombre, $descripcion, $categoria, $precio, $stock, $oferta, $fecha, $imagen)) {
@@ -101,11 +112,8 @@ class ProductoController
 
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
             $imagen = $_FILES['imagen'];
-
             $nomArchivo = uniqid() . '_' . $imagen['name'];
-
-            $rutaDestino = __DIR__ . '/../../public/img/' . $nomArchivo;
-
+            $rutaDestino = __DIR__ . '/../../public/imgs/' . $nomArchivo;
             if (!move_uploaded_file($imagen['tmp_name'], $rutaDestino)) {
                 return ErrorController::showError500("Error al subir la imagen.");
             }

@@ -21,9 +21,6 @@ class Routes
         Router::add('GET', 'Usuario/registro', function () {
             return (new UsuarioController())->registro();
         });
-        Router::add('POST', 'Usuario/registro', function () {
-            return (new UsuarioController())->registro();
-        });
         Router::add('GET', 'Usuario/modificarDatos?id=:id', function ($id) {
             return (new UsuarioController())->modificarDatos($id);
         });
@@ -45,10 +42,10 @@ class Routes
         Router::add('GET', 'Usuario/logout', function () {
             return (new UsuarioController())->logout();
         });
-        Router::add('POST', 'Categoria/crearCategoria', function () {
+        Router::add('GET', 'Categoria/crearCategoria', function () {
             return (new CategoriaController())->createCategoria();
         });
-        Router::add('GET', 'Categoria/crearCategoria', function () {
+        Router::add('POST', 'Categoria/crearCategoria', function () {
             return (new CategoriaController())->createCategoria();
         });
         Router::add('GET', 'Categoria/mostrarCategorias', function () {
@@ -60,11 +57,28 @@ class Routes
         Router::add('POST', 'Categoria/modificarCategoria?id=:id', function ($id) {
             return (new CategoriaController())->modificarCategoria($id);
         });
+        Router::add('GET', 'Categoria/modificarCategoria', function () {
+            if (isset($_GET['id'])) {
+                return (new CategoriaController())->modificarCategoria((int)$_GET['id']);
+            } else {
+                echo "Error 404: Recurso no encontrado.";
+            }
+        });
         Router::add('POST', 'Categoria/actualizarCategoria?id=:id', function ($id) {
             return (new CategoriaController())->updateCategoria($id);
         });
+        Router::add('POST', 'Categoria/actualizarCategoria', function () {
+            if (isset($_GET['id'])) {
+                return (new CategoriaController())->updateCategoria((int)$_GET['id']);
+            } else {
+                echo "Error 404: Recurso no encontrado.";
+            }
+        });
         Router::add('POST', 'Categoria/eliminarCategoria?id=:id', function ($id) {
             return (new CategoriaController())->deleteCategoria($id);
+        });
+        Router::add('POST', 'Categoria/eliminarCategoria', function () {
+            return (new CategoriaController())->deleteCategoria((int)$_POST['categoria_id']);
         });
         Router::add('GET', 'Categoria/mostrarProductosCategoria?id=:id', function ($id) {
             return (new CategoriaController())->showProductosByCategoria($id);

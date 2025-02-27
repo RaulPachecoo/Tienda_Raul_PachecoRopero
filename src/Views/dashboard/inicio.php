@@ -1,6 +1,8 @@
 <?php use Controllers\ProductoController;
+use Controllers\CategoriaController;
 
 $productos = ProductoController::getProductos();
+$categorias = CategoriaController::getCategorias();
 ?>
 
 <!DOCTYPE html>
@@ -25,11 +27,26 @@ $productos = ProductoController::getProductos();
 
     <div class="container py-5">
         <h1 class="text-light text-center mb-5">Bienvenido a nuestra tienda</h1>
+
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <div class="collapse navbar-collapse" id="navbarCategorias">
+                    <ul class="navbar-nav me-auto navbar-categorias">
+                        <?php foreach ($categorias as $categoria): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= BASE_URL ?>Categoria/mostrarProductosCategoria/?id=<?= $categoria['id'] ?>"><?= $categoria['nombre'] ?></a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
         <div class="row">
             <?php foreach ($productos as $producto): ?>
                 <div class="col-md-4 mb-4">
                     <div class="card bg-dark text-light border-light shadow d-flex flex-column h-100" style="height: 100%;"> <!-- Altura uniforme -->
-                        <img src="<?= $producto['imagen'] ?>" class="card-img-top" alt="<?= $producto['nombre'] ?>" style="max-height: 200px; object-fit: cover;">
+                        <img src="<?= BASE_URL ?>public/imgs/<?= $producto['imagen'] ?>" class="card-img-top" alt="<?= $producto['nombre'] ?>" style="max-height: 200px; object-fit: cover;">
                         <div class="card-body d-flex flex-column flex-grow-1" style="flex: 1 1 auto;"> <!-- Fixed height for card body -->
                             <h5 class="card-title"><?= $producto['nombre'] ?></h5>
                             <p class="card-text flex-grow-1"><?= $producto['descripcion'] ?></p> <!-- Descripción flexible -->

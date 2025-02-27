@@ -60,10 +60,10 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="imagen" class="form-label">Imagen (URL):</label>
-                    <input type="text" id="imagen" name="imagen" class="form-control" value="<?= $producto['imagen'] ?>">
+                    <label for="imagen" class="form-label">Imagen:</label>
+                    <input type="file" id="imagen" name="imagen" class="form-control">
                     <?php if (!empty($producto['imagen'])): ?>
-                        <img src="<?= $producto['imagen'] ?>" alt="Imagen actual" class="mt-2 img-fluid rounded" style="max-width: 200px;">
+                        <img src="<?= BASE_URL ?>public/imgs/<?= $producto['imagen'] ?>" alt="Imagen actual" class="mt-2 img-fluid rounded" style="max-width: 200px;">
                     <?php endif; ?>
                 </div>
 

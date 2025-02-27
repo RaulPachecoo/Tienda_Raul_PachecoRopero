@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 
-<body class="bg-dark text-light">
+<body class="text-light">
     <div class="container mt-5 mb-5">
         <h1 class="text-center mb-4">Crear Producto</h1>
 
-        <form action="<?= BASE_URL ?>Producto/crearProducto" method="POST" enctype="multipart/form-data" class="bg-dark p-4">
+        <form action="<?= BASE_URL ?>Producto/crearProducto" method="POST" enctype="multipart/form-data" class="p-4">
 
             <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre:</label>
@@ -56,8 +56,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="imagen" class="form-label">Imagen (URL):</label>
-                <input type="text" id="imagen" name="imagen" class="form-control">
+                <label for="imagen" class="form-label">Imagen:</label>
+                <input type="file" id="imagen" name="imagen" class="form-control">
             </div>
 
             <div class="text-center">

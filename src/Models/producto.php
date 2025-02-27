@@ -223,6 +223,7 @@ class Producto
 
     public function createProducto(string $nombre, string $descripcion, int $categoria, float $precio, int $stock, string $oferta, DateTime $fecha, string $imagen) {
         try {
+            $this->checkAndCreateImageDir();
             $insert = $this->db->prepare(
                 "INSERT INTO productos (categoria_id, nombre, descripcion, precio, stock, oferta, fecha, imagen) 
                 VALUES (:categoria, :nombre, :descripcion, :precio, :stock, :oferta, :fecha, :imagen)"
@@ -295,6 +296,7 @@ class Producto
 
     public function updateProducto(int $id, int $categoria, string $nombre, string $descripcion, float $precio, int $stock, string $oferta, string $fecha, string $imagen): bool {
         try {
+            $this->checkAndCreateImageDir();
             $stmt = $this->db->prepare(
                 "UPDATE productos SET categoria_id = :categoria, nombre = :nombre, descripcion = :descripcion, precio = :precio, stock = :stock, oferta = :oferta, fecha = :fecha, imagen = :imagen WHERE id = :id"
             );
@@ -358,5 +360,11 @@ class Producto
         }
     }
 
+    private function checkAndCreateImageDir() {
+        $imageDir = __DIR__ . '/../../public/imgs';
+        if (!is_dir($imageDir)) {
+            mkdir($imageDir, 0777, true);
+        }
+    }
 
 }

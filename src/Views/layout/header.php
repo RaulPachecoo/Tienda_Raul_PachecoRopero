@@ -64,30 +64,6 @@ use Controllers\CategoriaController;
         .text-danger {
             color: #B52BD8 !important;
         }
-
-        /* Estilos para las categorías en fila */
-        .navbar-categorias {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-
-        .navbar-categorias .nav-item {
-            margin-right: 15px;
-        }
-
-        .navbar-categorias .nav-link {
-            color: white;
-            font-weight: bold;
-        }
-
-        .navbar-categorias .nav-link:hover {
-            color: #B52BD8;
-        }
-
-        .navbar-light .navbar-nav .nav-link.active {
-            color: #B52BD8 !important;
-        }
     </style>
 </head>
 
@@ -104,7 +80,7 @@ use Controllers\CategoriaController;
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarNav"></div>
+                <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <?php if (!isset($_SESSION['login']) || $_SESSION['login'] == 'failed'): ?>
                             <li class="nav-item">
@@ -119,7 +95,7 @@ use Controllers\CategoriaController;
                                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Producto/gestionarProductos/">Gestionar Productos</a></li>
                                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Producto/crearProducto/">Crear Producto</a></li>
                                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Categoria/mostrarCategorias/">Gestionar Categorías</a></li>
-                                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Categoria/crearCategoria/">Añadir Categoría</a></li>
+                                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Categoria/crearCategoria/">Crear Categoría</a></li>
                                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Usuario/registro/">Registrar Usuario</a></li>
                             <?php else: ?>
                                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>Pedido/mostrarPedidos/">Mis Pedidos</a></li>
@@ -145,22 +121,6 @@ use Controllers\CategoriaController;
             </div>
         </nav>
     </header>
-
-    <?php $categorias = CategoriaController::getCategorias(); ?>
-
-    <nav class="navbar navbar-expand-lg"></nav>
-        <div class="container">
-            <div class="collapse navbar-collapse" id="navbarCategorias">
-                <ul class="navbar-nav me-auto navbar-categorias">
-                    <?php foreach ($categorias as $categoria): ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= BASE_URL ?>Categoria/mostrarProductosCategoria/?id=<?= $categoria['id'] ?>"><?= $categoria['nombre'] ?></a>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
     <!-- Bootstrap JS (necesario para los dropdowns) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

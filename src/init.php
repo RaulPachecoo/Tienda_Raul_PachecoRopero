@@ -7,24 +7,35 @@ require_once __DIR__ . '/../config/config.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
-// Obtener la URL solicitada
-$requestUri = $_SERVER['REQUEST_URI'];
+// Obtener la ruta solicitada (sin parámetros GET)
+$requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+// Rutas donde no se debe cargar header/footer
 $excludedRoutes = [
-    "/DWES/Tienda_Raul_PachecoRopero/Usuario/login",
-    "/DWES/Tienda_Raul_PachecoRopero/Usuario/registro"
+    "/Usuario/login",
+    "/Usuario/registro"
 ];
 
-// Solo incluir header y footer si la página NO es login ni registro
-if (!in_array($requestUri, $excludedRoutes)) {
-    require_once './src/Views/layout/header.php';  // Incluir header
+// Verifica si la ruta actual está en las excluidas
+$excludeHeaderFooter = false;
+foreach ($excludedRoutes as $route) {
+    if (strpos($requestUri, $route) !== false) {
+        $excludeHeaderFooter = true;
+        break;
+    }
+}
+
+// Incluir header si no está en las rutas excluidas
+if (!$excludeHeaderFooter) {
+    require_once './src/Views/layout/header.php';
 }
 
 // Cargar enrutador
 use Routes\Routes;
 Routes::index();  // Ejecutar rutas
 
-// Solo incluir footer si la página NO es login ni registro
-if (!in_array($requestUri, $excludedRoutes)) {
-    require_once './src/Views/layout/footer.php';  // Incluir footer
+// Incluir footer solo si no está en las rutas excluidas
+if (!$excludeHeaderFooter) {
+    require_once './src/Views/layout/footer.php';
 }
 ?>
