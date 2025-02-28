@@ -6,6 +6,7 @@ use Lib\Pages;
 use Models\Producto;
 use Controllers\CarritoController;
 use Controllers\ErrorController;
+use Pagerfanta\Pagerfanta;
 
 class ProductoController
 {
@@ -26,13 +27,17 @@ class ProductoController
         return Producto::getAll();
     }
 
-    public function gestionarProductos()
+    public function gestionarProductos(int $page = 1)
     {
         $this->carrito->comprobarLogin();
 
-        $productos = $this->getProductos();
+        $maxPerPage = 10; // Número máximo de productos por página
+        $pagerfanta = Producto::getPaginatedProductos($page, $maxPerPage);
 
-        $this->pages->render('Producto/gestionarProductos', ['productos' => $productos]);
+        $this->pages->render('Producto/gestionarProductos', [
+            'productos' => $pagerfanta->getCurrentPageResults(),
+            'pagerfanta' => $pagerfanta
+        ]);
     }
 
     public function createProducto() {
@@ -53,15 +58,19 @@ class ProductoController
             $fecha = new \DateTime($_POST['fecha']); // Convertir la cadena de fecha a un objeto DateTime
 
             if (!is_numeric($precio) || !is_numeric($stock)) {
-                return ErrorController::showError500("El precio y el stock deben ser números.");
+                $errores = ["El precio y el stock deben ser números."];
+                $this->pages->render('producto/crearProducto', ['errores' => $errores]);
+                return;
             }
 
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
                 $imagen = $_FILES['imagen'];
-                $nomArchivo = uniqid() . '_' . $imagen['name'];
+                $nomArchivo = $imagen['name'];
                 $rutaDestino = __DIR__ . '/../../public/imgs/' . $nomArchivo;
                 if (!move_uploaded_file($imagen['tmp_name'], $rutaDestino)) {
-                    return ErrorController::showError500("Error al subir la imagen.");
+                    $errores = ["Error al subir la imagen."];
+                    $this->pages->render('producto/crearProducto', ['errores' => $errores]);
+                    return;
                 }
                 $imagen = $nomArchivo;
             } else {
@@ -69,14 +78,18 @@ class ProductoController
             }
 
             if (!$this->producto->createProducto($nombre, $descripcion, $categoria, $precio, $stock, $oferta, $fecha, $imagen)) {
-                return ErrorController::showError500("Error al crear el producto.");
+                $errores = ["Error al crear el producto."];
+                $this->pages->render('producto/crearProducto', ['errores' => $errores]);
+                return;
             }
 
-            $this->pages->render('producto/crearProducto');
-            exit;
+            $mensaje = "Producto creado con éxito.";
+            $this->pages->render('producto/crearProducto', ['mensaje' => $mensaje]);
+            return;
         }
 
-        return ErrorController::showError404();
+        $errores = ["Datos del producto no recibidos."];
+        $this->pages->render('producto/crearProducto', ['errores' => $errores]);
     }
 
     public function modificarProducto($id){
@@ -95,7 +108,9 @@ class ProductoController
         $this->carrito->comprobarLogin();
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['nombre'], $_POST['descripcion'], $_POST['categoria'], $_POST['precio'], $_POST['stock'], $_POST['oferta'], $_POST['fecha'])) {
-            return ErrorController::showError404();
+            $errores = ["Datos del producto no recibidos."];
+            $this->pages->render('producto/modificar', ['errores' => $errores]);
+            return;
         }
 
         $nombre = $_POST['nombre'];
@@ -107,7 +122,9 @@ class ProductoController
         $fecha = $_POST['fecha'];
 
         if (!is_numeric($precio) || !is_numeric($stock)) {
-            return ErrorController::showError500("El precio y el stock deben ser números.");
+            $errores = ["El precio y el stock deben ser números."];
+            $this->pages->render('producto/modificar', ['errores' => $errores]);
+            return;
         }
 
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
@@ -115,7 +132,9 @@ class ProductoController
             $nomArchivo = uniqid() . '_' . $imagen['name'];
             $rutaDestino = __DIR__ . '/../../public/imgs/' . $nomArchivo;
             if (!move_uploaded_file($imagen['tmp_name'], $rutaDestino)) {
-                return ErrorController::showError500("Error al subir la imagen.");
+                $errores = ["Error al subir la imagen."];
+                $this->pages->render('producto/modificar', ['errores' => $errores]);
+                return;
             }
             $imagen = $nomArchivo; // Asignar la ruta del archivo subido
         } else {
@@ -123,23 +142,35 @@ class ProductoController
         }
 
         if (!$this->producto->updateProducto($id, $categoria, $nombre, $descripcion, $precio, $stock, $oferta, $fecha, $imagen)) {
-            return ErrorController::showError500("Error al actualizar el producto.");
+            $errores = ["Error al actualizar el producto."];
+            $this->pages->render('producto/modificar', ['errores' => $errores]);
+            return;
+        }
+
+        $mensaje = "Producto actualizado con éxito.";
+        $productos = self::getProductos();
+        $this->pages->render('producto/gestionarProductos', [
+            'productos' => $productos,
+            'mensaje' => $mensaje
+        ]);
+    }
+
+    public function deleteProducto(int $id): void
+    {
+        $this->carrito->comprobarLogin();
+
+        $producto = new Producto();
+        if ($producto->deleteProducto($id)) {
+            $mensaje = "Producto eliminado con éxito.";
+        } else {
+            $errores = ["Error al eliminar el producto."];
         }
 
         $productos = self::getProductos();
-        $this->pages->render('producto/gestionarProductos', ['productos' => $productos]);
+        $this->pages->render('producto/gestionarProductos', [
+            'productos' => $productos,
+            'mensaje' => $mensaje ?? null,
+            'errores' => $errores ?? null
+        ]);
     }
-
-        public function deleteProducto(int $id): void
-        {
-            $this->carrito->comprobarLogin();
-
-            $producto = new Producto();
-            if (!$producto->deleteProducto($id)) {
-                ErrorController::showError500("Error al eliminar el producto.");
-            }
-
-            $productos = self::getProductos();
-            $this->pages->render('producto/gestionarProductos', ['productos' => $productos]);
-        }
 }

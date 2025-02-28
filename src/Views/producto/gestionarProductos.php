@@ -1,5 +1,20 @@
 <div class="container mt-5">
     <h1 class="text-light text-center mb-4">Gestionar Productos</h1>
+
+    <?php if (isset($mensaje)): ?>
+        <div class="alert alert-success">
+            <?= $mensaje ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($errores)): ?>
+        <div class="alert alert-danger">
+            <?php foreach ($errores as $error): ?>
+                <p><?= $error ?></p>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
     <div class="row">
         <?php foreach ($productos as $producto): ?>
             <div class="col-md-4 mb-4">

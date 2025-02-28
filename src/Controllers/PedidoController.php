@@ -9,8 +9,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception; 
 use PHPMailer\PHPMailer\SMTP; 
 use Controllers\CarritoController; 
-use Models\Producto; 
-
+use Models\Producto;
 
 class PedidoController{
     private $pages; 
@@ -27,7 +26,7 @@ class PedidoController{
         $this->carrito->comprobarLogin(); 
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $this->pages->render('pedidos/formulario');
+            $this->pages->render('pedidos/formularioPago');
             return;
         }
 
@@ -73,6 +72,10 @@ class PedidoController{
         $estado = 'Pendiente'; 
         $result = $this->pedido->createPedido($usuario_id, $provincia, $localidad, $direccion, $precioTotal, $estado);
 
+        if ($result) {
+            setcookie('carrito', '', time() - 3600, '/'); // Destroy the cart cookie
+        }
+
         if (!$result) {
             return ErrorController::showError500("Error al crear el pedido.");
         }
@@ -80,7 +83,6 @@ class PedidoController{
         // Mostrar la página de pedidos
         $this->showPedidos();
     }
-
     public function completarPedido(int $id) {
         $this->carrito->comprobarLogin(); 
 
@@ -101,6 +103,7 @@ class PedidoController{
         $usuarioId = $_SESSION['login']->id; 
         $esAdministrador = $_SESSION['login']->rol === 'admin';
         $pedidos = $esAdministrador ? $this->pedido->getAll() : $this->pedido->getPedidosByUsuario($usuarioId);
+        $_SESSION['carrito'] = [];
         $this->pages->render('pedidos/mostrarPedidos', ['pedidos' => $pedidos]);
 
         exit;

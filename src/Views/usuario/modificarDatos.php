@@ -4,6 +4,19 @@
         <div class="col-md-6">
             <div class="card mb-5 text-light shadow p-4" style="background-color: black;">
 
+                <!-- Mostrar mensajes de éxito o error -->
+                <?php if (isset($_SESSION['mensaje'])): ?>
+                    <div class="alert alert-success">
+                        <?php echo htmlspecialchars($_SESSION['mensaje']); unset($_SESSION['mensaje']); ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['errores'])): ?>
+                    <div class="alert alert-danger">
+                        <?php echo htmlspecialchars($_SESSION['errores']); unset($_SESSION['errores']); ?>
+                    </div>
+                <?php endif; ?>
+
                 <!-- Mostrar errores, si los hay -->
                 <?php if (isset($errores) && count($errores) > 0): ?>
                     <div class="alert alert-danger">

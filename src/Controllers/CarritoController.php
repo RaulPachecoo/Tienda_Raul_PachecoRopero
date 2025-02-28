@@ -68,6 +68,7 @@ class CarritoController
         }
 
         $this->showCarrito();
+        setcookie('carrito', json_encode($_SESSION['carrito']), time() + (3 * 24 * 60 * 60), '/'); // Set cart cookie for 3 days
     }
 
     public function showCarrito(): void
@@ -148,6 +149,7 @@ class CarritoController
     public function vaciarCarrito(): void
     {
         $_SESSION['carrito'] = [];
+        setcookie('carrito', '', time() - 3600, '/'); // Destroy the cart cookie
         $this->showCarrito();
     }
 }

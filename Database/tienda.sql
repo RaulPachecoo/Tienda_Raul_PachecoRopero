@@ -1,72 +1,235 @@
-CREATE DATABASE tienda;
-SET NAMES UTF8;
-CREATE DATABASE IF NOT EXISTS tienda;
-USE tienda;
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 28-02-2025 a las 16:42:01
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.0.28
 
-DROP TABLE IF EXISTS usuarios;
-CREATE TABLE IF NOT EXISTS usuarios( 
-id              int(255) auto_increment not null,
-nombre          varchar(100) not null,
-apellidos       varchar(255),
-email           varchar(255) not null,
-password        varchar(255) not null,
-rol             varchar(20),
-CONSTRAINT pk_usuarios PRIMARY KEY(id),
-CONSTRAINT uq_email UNIQUE(email)  
-)ENGINE=InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
-DROP TABLE IF EXISTS categorias;
-CREATE TABLE IF NOT EXISTS categorias(
-id              int(255) auto_increment not null,
-nombre          varchar(100) not null,
-CONSTRAINT pk_categorias PRIMARY KEY(id) 
-)ENGINE=InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Base de datos: `tienda`
+--
 
-DROP TABLE IF EXISTS productos;
-CREATE TABLE IF NOT EXISTS productos(
-id              int(255) auto_increment not null,
-categoria_id    int(255) not null,
-nombre          varchar(100) not null,
-descripcion     text,
-precio          float(100,2) not null,
-stock           int(255) not null,
-oferta          varchar(2),
-fecha           date not null,
-imagen          varchar(255),
-CONSTRAINT pk_categorias PRIMARY KEY(id),
-CONSTRAINT fk_producto_categoria FOREIGN KEY(categoria_id) REFERENCES categorias(id)
-)ENGINE=InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS pedidos;
-CREATE TABLE IF NOT EXISTS pedidos(
-id              int(255) auto_increment not null,
-usuario_id      int(255) not null,
-provincia       varchar(100) not null,
-localidad       varchar(100) not null,
-direccion       varchar(255) not null,
-coste           float(200,2) not null,
-estado          varchar(20) not null,
-fecha           date,
-hora            time,
-CONSTRAINT pk_pedidos PRIMARY KEY(id),
-CONSTRAINT fk_pedido_usuario FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
-)ENGINE=InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+--
+-- Estructura de tabla para la tabla `categorias`
+--
 
-DROP TABLE IF EXISTS lineas_pedidos;
-CREATE TABLE IF NOT EXISTS lineas_pedidos(
-id              int(255) auto_increment not null,
-pedido_id       int(255) not null,
-producto_id     int(255) not null,
-unidades        int(255) not null,
-CONSTRAINT pk_lineas_pedidos PRIMARY KEY(id),
-CONSTRAINT fk_linea_pedido FOREIGN KEY(pedido_id) REFERENCES pedidos(id),
-CONSTRAINT fk_linea_producto FOREIGN KEY(producto_id) REFERENCES productos(id)
-)ENGINE=InnoDb DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+CREATE TABLE `categorias` (
+  `id` int(255) NOT NULL,
+  `nombre` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-INSERT INTO usuarios (nombre, apellidos, email, password, rol) values ('Raúl', 'Pacheco Ropero', 'raulpachecoropero@gmail.com', '$2y$04$MO.CEdXSPkQdE1FY90YV1e7DU2AUHXp6YakEsyMUUEc/aWQ2tAIkC', 'admin'); 
--- La contraseña sin cifrar es 'admin'
+--
+-- Volcado de datos para la tabla `categorias`
+--
 
-INSERT INTO CATEGORIAS (nombre) VALUES ('Coches'); 
-INSERT INTO CATEGORIAS (nombre) VALUES ('Motos'); 
+INSERT INTO `categorias` (`id`, `nombre`) VALUES
+(1, 'Coches'),
+(2, 'Motos'),
+(3, 'SUV'),
+(4, 'Deportivo'),
+(11, 'Sedán');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `lineas_pedidos`
+--
+
+CREATE TABLE `lineas_pedidos` (
+  `id` int(255) NOT NULL,
+  `pedido_id` int(255) NOT NULL,
+  `producto_id` int(255) NOT NULL,
+  `unidades` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedidos`
+--
+
+CREATE TABLE `pedidos` (
+  `id` int(255) NOT NULL,
+  `usuario_id` int(255) NOT NULL,
+  `provincia` varchar(100) NOT NULL,
+  `localidad` varchar(100) NOT NULL,
+  `direccion` varchar(255) NOT NULL,
+  `coste` float(200,2) NOT NULL,
+  `estado` varchar(20) NOT NULL,
+  `fecha` date DEFAULT NULL,
+  `hora` time DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `productos`
+--
+
+CREATE TABLE `productos` (
+  `id` int(255) NOT NULL,
+  `categoria_id` int(255) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `precio` float(100,2) NOT NULL,
+  `stock` int(255) NOT NULL,
+  `oferta` varchar(2) DEFAULT NULL,
+  `fecha` date NOT NULL,
+  `imagen` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`id`, `categoria_id`, `nombre`, `descripcion`, `precio`, `stock`, `oferta`, `fecha`, `imagen`) VALUES
+(2, 1, 'BMW M8 Competition', 'Motor de gasolina M TwinPower Turbo de V8 cilindros de alto rendimiento de 460 kW (625 CV)', 218650.00, 1, '0', '2025-02-25', 'm8Competition.jpg'),
+(4, 2, 'S1000RR', 'Motor de cuatro tiempos y cuatro cilindros en línea, refrigerado por agua/aceite', 23850.00, 3, '0', '2025-02-25', 's1000rr.jpg'),
+(5, 1, 'Audi RS7', 'El Audi RS 7 Sportback performance es un deportivo Gran Turismo que ofrece un rendimiento excepcional, las mejores prestaciones y una tecnología innovadora.', 1.00, 9, '0', '2025-02-25', 'rs7.jpg'),
+(6, 2, 'Kawasaki Ninja H2R', 'Para los entusiastas de la velocidad, la Kawasaki Ninja H2R del 2022 ofrece un motor sobrealimentado de 998 cm³ con una impresionante potencia de 310 CV.', 55000.00, 2, '0', '2025-02-25', 'ninjah2r.jpg'),
+(7, 1, 'Mitsubishi Lancer Evo IV', 'MITSUBISHI LANCER EVOLUTION 9 ULTIMATE 2.0 TURBO 4x4 CON ELECTRÓNICA 350CV', 64000.00, 1, '0', '2025-02-25', 'evo9.jpg'),
+(12, 1, 'Mercedes G63 Brabus', 'El Mercedes más bonito del mundooo', 400000.00, 2, '0', '2025-02-25', 'g63Brabus.jpg'),
+(13, 1, 'Alfa Romeo Giulia Quadrifoglio', 'La tecnología de vanguardia impulsa la impactante belleza del Alfa Romeo Giulia Quadrifoglio, ofreciendo un rendimiento asombroso con todo el estilo italiano.', 106480.00, 2, '0', '2025-02-25', 'giulia.jpg'),
+(15, 2, 'Ducati Panigale V4', 'La maravilla es la sensación inmediata e intensa que uno experimenta al mirar y montar esta magnífica creación. Una maravilla mágica e irracional, lograda gracias a la increíble brillantez y dedicación de Ducati. En la saga épica de las superbikes de Ducati, la nueva Panigale V4 representa la séptima generación, una síntesis de diseño y tecnología.', 31590.00, 4, '0', '2025-02-25', 'panigale.jpg\r\n'),
+(16, 2, 'Honda CBR1000RR-R Fireblade', 'Por eso corremos. Por eso siempre hemos competido, y son las opiniones de HRC y de nuestros pilotos las que han dado lugar a la nueva CBR1000RR-R Fireblade. Tiene más potencia en el rango medio gracias a las mejoras en la admisión y la culata, con relaciones de cambio revisadas para una salida de curva increíble.', 25000.00, 3, '0', '2025-02-27', '67c0b97218926_cbr1000rr.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id` int(255) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `apellidos` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `rol` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `nombre`, `apellidos`, `email`, `password`, `rol`) VALUES
+(1, 'Raúl', 'Pacheco Ropero', 'raulpachecoropero@gmail.com', '$2y$04$Y5CD/uGpN5TZ9ZR3rifsFuLl5VcmXWEw9UCAP59iXFLQPV4KERGHS', 'admin'),
+(2, 'Raúl', 'Pacheco Ropero', 'raulpachecoropero555@gmail.com', '$2y$04$Y5CD/uGpN5TZ9ZR3rifsFuLl5VcmXWEw9UCAP59iXFLQPV4KERGHS', 'user'),
+(3, 'Pepe', 'Pepeeeeeee', 'pepe@gmail.com', '$2y$04$e85gVYtgcwhCb2p50r4rc.bk/mIgnJdfHpZnV4koFs1m0Aw82aFqW', 'user'),
+(5, 'Francisco', 'Arenas', 'fran.04.higueral@gmail.com', '$2y$04$sdmlZxNZR43VQdxa5NMDUeVL1TxgwS.tt7mbuqzOoiTxp7yAD4XXK', 'user'),
+(8, 'adrian', 'pacheco', 'adripacheco992@gmail.com', '$2y$04$aSABSg/U87KdGYR84I0H2.KjhgI/zxIJ7ac04pPjfZ4Psa0UiPThq', 'user');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `categorias`
+--
+ALTER TABLE `categorias`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `lineas_pedidos`
+--
+ALTER TABLE `lineas_pedidos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_linea_pedido` (`pedido_id`),
+  ADD KEY `fk_linea_producto` (`producto_id`);
+
+--
+-- Indices de la tabla `pedidos`
+--
+ALTER TABLE `pedidos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_pedido_usuario` (`usuario_id`);
+
+--
+-- Indices de la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_producto_categoria` (`categoria_id`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_email` (`email`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `categorias`
+--
+ALTER TABLE `categorias`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT de la tabla `lineas_pedidos`
+--
+ALTER TABLE `lineas_pedidos`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `pedidos`
+--
+ALTER TABLE `pedidos`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+
+--
+-- AUTO_INCREMENT de la tabla `productos`
+--
+ALTER TABLE `productos`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `lineas_pedidos`
+--
+ALTER TABLE `lineas_pedidos`
+  ADD CONSTRAINT `fk_linea_pedido` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos` (`id`),
+  ADD CONSTRAINT `fk_linea_producto` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`);
+
+--
+-- Filtros para la tabla `pedidos`
+--
+ALTER TABLE `pedidos`
+  ADD CONSTRAINT `fk_pedido_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
+
+--
+-- Filtros para la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD CONSTRAINT `fk_producto_categoria` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

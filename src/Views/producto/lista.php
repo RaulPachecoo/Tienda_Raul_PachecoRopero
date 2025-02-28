@@ -73,6 +73,34 @@ $categorias = CategoriaController::getCategorias();
                 <p class="text-center"><?= isset($mensaje) ? $mensaje : 'No hay productos disponibles en esta categoría.' ?></p>
             <?php endif; ?>
         </div>
+
+        <?php if ($pagerfanta->haveToPaginate()): ?>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <?php if ($pagerfanta->hasPreviousPage()): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?= $pagerfanta->getPreviousPage() ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php foreach (range(1, $pagerfanta->getNbPages()) as $page): ?>
+                        <li class="page-item <?= $page == $pagerfanta->getCurrentPage() ? 'active' : '' ?>">
+                            <a class="page-link" href="?page=<?= $page ?>"><?= $page ?></a>
+                        </li>
+                    <?php endforeach; ?>
+
+                    <?php if ($pagerfanta->hasNextPage()): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?= $pagerfanta->getNextPage() ?>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
     </div>
 
     <!-- Bootstrap JS (para interactividad) -->

@@ -1,5 +1,11 @@
 <h1 class="text-light text-center mt-5">Carrito de Compras</h1>
 
+<?php
+if (isset($_COOKIE['carrito'])) {
+    $_SESSION['carrito'] = json_decode($_COOKIE['carrito'], true);
+}
+?>
+
 <?php if (!empty($_SESSION['carrito'])): ?>
     <div class="container mt-4">
         <div class="row">
@@ -13,7 +19,7 @@
             ?>
                 <div class="col-md-4 mb-4">
                     <div class="card bg-dark text-light border-light shadow">
-                        <img src="<?= htmlspecialchars($producto['imagen'], ENT_QUOTES, 'UTF-8') ?>" 
+                        <img src="<?= BASE_URL ?>public/imgs/<?= $producto['imagen'] ?>" 
                              class="card-img-top" 
                              alt="<?= htmlspecialchars($producto['nombre'], ENT_QUOTES, 'UTF-8') ?>" 
                              style="max-height: 200px; object-fit: cover;">

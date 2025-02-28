@@ -7,6 +7,7 @@ use Utils\Utils;
 use Models\Categoria;
 use Models\Producto;
 use Controllers\CarritoController;
+use Pagerfanta\Pagerfanta;
 
 class CategoriaController{
 
@@ -29,40 +30,48 @@ class CategoriaController{
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (empty($_POST['categoria'])) {
-                ErrorController::showError500("No se ha enviado ninguna categoría.");
+                $errores = ["No se ha enviado ninguna categoría."];
+                $this->pages->render('categoria/crearCategoria', ['errores' => $errores]);
                 return;
             }
             $categoria = trim($_POST['categoria']);
 
             if (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', $categoria)) {
-                ErrorController::showError500("El nombre de la categoría no es válido.");
+                $errores = ["El nombre de la categoría no es válido."];
+                $this->pages->render('categoria/crearCategoria', ['errores' => $errores]);
                 return;
             }
 
             $result = $this->categoria->createCategoria($categoria);
 
             if (!$result) {
-                ErrorController::showError500("Error al crear la categoría.");
+                $errores = ["Error al crear la categoría."];
+                $this->pages->render('categoria/crearCategoria', ['errores' => $errores]);
                 return;
             }
-            
+
+            $mensaje = "Categoría creada con éxito.";
             $categorias = Categoria::getAll();
-            $this->pages->render('categoria/mostrarCategorias', ['categorias' => $categorias]);
-            exit();
-        } else {
-            $this->pages->render('categoria/crearCategoria');
+            $this->pages->render('categoria/mostrarCategorias', ['categorias' => $categorias, 'mensaje' => $mensaje]);
+            return;
         }
+
+        $this->pages->render('categoria/crearCategoria');
     }
 
-    public function showProductosByCategoria(int $id) {
-        $productos = Producto::getProductosByCategoria($id);
+    public function showProductosByCategoria(int $id, int $page = 1) {
+        $maxPerPage = 9; // Número máximo de productos por página
+        $pagerfanta = Producto::getPaginatedProductosByCategoria($id, $page, $maxPerPage);
 
-        if ($productos === false || empty($productos)) {
+        if ($pagerfanta->getNbResults() === 0) {
             $this->pages->render('producto/lista', ['productos' => [], 'mensaje' => 'No hay productos disponibles en esta categoría.'], true, true);
             return;
         }
 
-        $this->pages->render('producto/lista', ['productos' => $productos], true, true);
+        $this->pages->render('producto/lista', [
+            'productos' => $pagerfanta->getCurrentPageResults(),
+            'pagerfanta' => $pagerfanta
+        ], true, true);
     }
 
     public function showCategorias() {
@@ -90,26 +99,32 @@ class CategoriaController{
     public function updateCategoria(int $id): void {
         $this->carrito->comprobarLogin();
 
+        $categoria = Categoria::getCategoriaById($id); // Obtener la categoría antes de la validación
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_POST['nombre'])) {
-            ErrorController::showError500("No se ha enviado el nombre de la categoría.");
+            $errores = ["No se ha enviado el nombre de la categoría."];
+            $this->pages->render('categoria/modificar', ['categoria' => $categoria, 'errores' => $errores]);
             return;
         }
         $nombre = trim($_POST['nombre']);
 
         if (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]+$/', $nombre)) {
-            ErrorController::showError500("El nombre de la categoría no es válido.");
+            $errores = ["El nombre de la categoría no es válido."];
+            $this->pages->render('categoria/modificar', ['categoria' => $categoria, 'errores' => $errores]);
             return;
         }
         
         $result = $this->categoria->updateCategoria($id, $nombre);
 
         if (!$result) {
-            ErrorController::showError500("Error al actualizar la categoría.");
+            $errores = ["Error al actualizar la categoría."];
+            $this->pages->render('categoria/modificar', ['categoria' => $categoria, 'errores' => $errores]);
             return;
         }
 
+        $mensaje = "Categoría actualizada con éxito.";
         $categorias = Categoria::getAll();
-        $this->pages->render('categoria/mostrarCategorias', ['categorias' => $categorias]);
+        $this->pages->render('categoria/mostrarCategorias', ['categorias' => $categorias, 'mensaje' => $mensaje]);
     }
 
     public function deleteCategoria(int $id): void {
@@ -118,12 +133,15 @@ class CategoriaController{
         $categoria = new Categoria();
 
         if (!$categoria->deleteCategoria($id)) {
-            ErrorController::showError500("Error al eliminar la categoría.");
+            $errores = ["Error al eliminar la categoría."];
+            $categorias = Categoria::getAll();
+            $this->pages->render('categoria/mostrarCategorias', ['categorias' => $categorias, 'errores' => $errores]);
             return;
         }
 
+        $mensaje = "Categoría eliminada con éxito.";
         $categorias = Categoria::getAll();
-        $this->pages->render('categoria/mostrarCategorias', ['categorias' => $categorias]);
+        $this->pages->render('categoria/mostrarCategorias', ['categorias' => $categorias, 'mensaje' => $mensaje]);
     }
 
 }

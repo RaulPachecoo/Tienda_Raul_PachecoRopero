@@ -11,6 +11,20 @@
     <div class="container mt-5 mb-5">
         <h1 class="text-center mb-4">Modificar Producto</h1>
 
+        <?php if (isset($mensaje)): ?>
+            <div class="alert alert-success">
+                <?= $mensaje ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($errores)): ?>
+            <div class="alert alert-danger">
+                <?php foreach ($errores as $error): ?>
+                    <p><?= $error ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
         <?php if (!empty($producto)): ?>
             <form action="<?= BASE_URL ?>Producto/actualizarProducto?id=<?= $producto['id'] ?>" method="POST" enctype="multipart/form-data" class="bg-dark p-4">
 

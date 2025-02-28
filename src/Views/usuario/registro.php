@@ -80,6 +80,14 @@ require_once __DIR__ . '/../../../config/config.php';
         <?php endif; ?>
         <?php Utils::deleteSession('register'); ?>
 
+        <?php if (isset($errores)): ?>
+            <div class="alert alert-danger">
+                <?php foreach ($errores as $error): ?>
+                    <p><?= $error ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
         <form action="<?= BASE_URL ?>Usuario/registro" method="POST">
             <div class="text-start mb-3">
                 <label for="nombre" class="form-label">Nombre</label>

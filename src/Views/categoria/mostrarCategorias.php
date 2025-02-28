@@ -8,6 +8,21 @@
 <body class="text-light">
     <div class="container mt-5 mb-5">
         <h1 class="text-center mb-4">Listado de Categorías</h1>
+
+        <?php if (isset($mensaje)): ?>
+            <div class="alert alert-success">
+                <?= $mensaje ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($errores)): ?>
+            <div class="alert alert-danger">
+                <?php foreach ($errores as $error): ?>
+                    <p><?= $error ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
         <ul class="list-group">
             <?php if (!empty($categorias)): ?>
                 <?php foreach ($categorias as $categoria): ?>

@@ -6,6 +6,8 @@ use DateTime;
 use Lib\DBConnection;
 use PDO;
 use PDOException;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Pagerfanta;
 
 class Producto
 {
@@ -364,6 +366,45 @@ class Producto
         $imageDir = __DIR__ . '/../../public/imgs';
         if (!is_dir($imageDir)) {
             mkdir($imageDir, 0777, true);
+        }
+    }
+
+    public static function getPaginatedProductos(int $currentPage, int $maxPerPage): Pagerfanta {
+        $producto = new Producto();
+        try {
+            $producto->db->consulta("SELECT * FROM productos ORDER BY id DESC");
+            $productos = $producto->db->extraer_todos();
+            $producto->db->close();
+
+            $adapter = new ArrayAdapter($productos);
+            $pagerfanta = new Pagerfanta($adapter);
+            $pagerfanta->setMaxPerPage($maxPerPage);
+            $pagerfanta->setCurrentPage($currentPage);
+
+            return $pagerfanta;
+        } catch (PDOException $e) {
+            return new Pagerfanta(new ArrayAdapter([]));
+        }
+    }
+
+    public static function getPaginatedProductosByCategoria(int $categoriaId, int $currentPage, int $maxPerPage): Pagerfanta {
+        $producto = new Producto();
+        try {
+            $stmt = $producto->db->prepare("SELECT * FROM productos WHERE categoria_id = :categoriaId ORDER BY id DESC");
+            $stmt->bindValue(':categoriaId', $categoriaId, PDO::PARAM_INT);
+            $stmt->execute();
+            $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt->closeCursor();
+            $producto->db->close();
+
+            $adapter = new ArrayAdapter($productos);
+            $pagerfanta = new Pagerfanta($adapter);
+            $pagerfanta->setMaxPerPage($maxPerPage);
+            $pagerfanta->setCurrentPage($currentPage);
+
+            return $pagerfanta;
+        } catch (PDOException $e) {
+            return new Pagerfanta(new ArrayAdapter([]));
         }
     }
 

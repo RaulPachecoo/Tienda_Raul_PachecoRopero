@@ -67,6 +67,14 @@
 
         <h3 class="mt-3">Inicia sesión en Car Shop</h3>
 
+        <?php if (isset($errores)): ?>
+            <div class="alert alert-danger">
+                <?php foreach ($errores as $error): ?>
+                    <p><?= $error ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
         <form method="POST" action="<?= BASE_URL ?>Usuario/login">
             <div class="text-start mb-3">
                 <label for="email" class="form-label">Email</label>
@@ -76,6 +84,11 @@
             <div class="text-start mb-3">
                 <label for="password" class="form-label">Contraseña</label>
                 <input type="password" id="password" name="data[password]" class="form-control" placeholder="Tu contraseña" required>
+            </div>
+
+            <div class="text-start mb-3">
+                <input type="checkbox" id="remember" name="data[remember]">
+                <label for="remember">Recuérdame</label>
             </div>
 
             <button type="submit" class="btn btn-login">Iniciar sesión</button>

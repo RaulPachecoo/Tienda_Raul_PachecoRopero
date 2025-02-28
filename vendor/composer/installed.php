@@ -3,7 +3,7 @@
         'name' => 'raul/tienda',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '574b999cb65c2140eac5746d8a1e191fc8d12e83',
+        'reference' => '44869e5ba468f6c26b08d5ae21c490d390834b3b',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -18,6 +18,69 @@
             'install_path' => __DIR__ . '/../graham-campbell/result-type',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'pagerfanta/core' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v3.8.0',
+            ),
+        ),
+        'pagerfanta/doctrine-collections-adapter' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v3.8.0',
+            ),
+        ),
+        'pagerfanta/doctrine-dbal-adapter' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v3.8.0',
+            ),
+        ),
+        'pagerfanta/doctrine-mongodb-odm-adapter' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v3.8.0',
+            ),
+        ),
+        'pagerfanta/doctrine-orm-adapter' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v3.8.0',
+            ),
+        ),
+        'pagerfanta/doctrine-phpcr-odm-adapter' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v3.8.0',
+            ),
+        ),
+        'pagerfanta/elastica-adapter' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v3.8.0',
+            ),
+        ),
+        'pagerfanta/pagerfanta' => array(
+            'pretty_version' => 'v3.8.0',
+            'version' => '3.8.0.0',
+            'reference' => 'a07c84296e491add39d103b812129de77610c33b',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../pagerfanta/pagerfanta',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'pagerfanta/solarium-adapter' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v3.8.0',
+            ),
+        ),
+        'pagerfanta/twig' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v3.8.0',
+            ),
         ),
         'phpmailer/phpmailer' => array(
             'pretty_version' => 'v6.9.3',
@@ -40,9 +103,18 @@
         'raul/tienda' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '574b999cb65c2140eac5746d8a1e191fc8d12e83',
+            'reference' => '44869e5ba468f6c26b08d5ae21c490d390834b3b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/deprecation-contracts' => array(
+            'pretty_version' => 'v3.0.2',
+            'version' => '3.0.2.0',
+            'reference' => '26954b3d62a6c5fd0ea8a2a00c0353a14978d05c',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/deprecation-contracts',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

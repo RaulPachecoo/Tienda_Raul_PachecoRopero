@@ -48,7 +48,6 @@ class UsuarioController
         $this->pages->render('usuario/registro', ['datos' => $registrado, 'errores' => $errores], false, false);
     }
 
-
     public function login(): void
     {
         // Verifica que la solicitud sea POST
@@ -72,12 +71,18 @@ class UsuarioController
                             // Guardar los datos del usuario en la sesión
                             $_SESSION['login'] = $verify;
 
+                            // Manejar la funcionalidad de "recordarme"
+                            if (isset($login['remember']) && $login['remember'] === 'on') {
+                                setcookie('user_email', $verify->email, time() + (7 * 24 * 60 * 60), "/");
+                            }
+
                             // Redirigir al usuario a la página principal
                             header('Location: ' . BASE_URL);
                             exit;  // Detener la ejecución del código después de la redirección
                         } else {
                             // Si la autenticación falla
                             $_SESSION['login'] = "failed";
+                            $errores = ["Usuario o contraseña incorrectos."];
                         }
                     } else {
                         // Si la validación falla, guardar los errores
@@ -86,10 +91,11 @@ class UsuarioController
                     }
                 } else {
                     $_SESSION['login'] = "failed";
-                    $errores = "Por favor, complete todos los campos.";
+                    $errores = ["Por favor, complete todos los campos."];
                 }
             } else {
                 $_SESSION['login'] = "failed";
+                $errores = ["Datos de login no recibidos."];
             }
         }
 
@@ -97,16 +103,13 @@ class UsuarioController
         if (!isset($verify) || !$verify) {
             // Si hay errores, pasarlos a la vista
             if (isset($errores)) {
-                $this->pages->render('Usuario/login', ['datos' => $login, 'errores' => $errores], false, false);
+                $this->pages->render('usuario/login', ['datos' => $login, 'errores' => $errores], false, false);
             } else {
                 // Si no hay datos previos, solo renderizar el login
-                $this->pages->render('Usuario/login', ['datos' => $login ?? []], false, false);
+                $this->pages->render('usuario/login', ['datos' => $login ?? []], false, false);
             }
         }
     }
-
-
-
 
     public function logout()
     {
@@ -116,6 +119,9 @@ class UsuarioController
         }
 
         Utils::deleteSession('login');
+
+        // Clear the user email cookie
+        setcookie('user_email', '', time() - 3600, "/");
 
         // Asegúrate de que no haya salida antes de llamar a header()
         if (headers_sent()) {

@@ -2,6 +2,8 @@
 
 namespace Lib;
 
+use Controllers\CategoriaController;
+
 class Router
 {
     private static $routes = [];
@@ -27,6 +29,14 @@ class Router
 
         $action = trim($action, '/');
 
+        if (!isset($_SESSION['login']) && isset($_COOKIE['user_email'])) {
+            $usuarioModel = new \Models\Usuario(null, '', '', $_COOKIE['user_email'], '', '');
+            $user = $usuarioModel->getByEmail($_COOKIE['user_email']);
+            if ($user) {
+                $_SESSION['login'] = $user;
+            }
+        }
+
         if (isset(self::$routes[$method][$action])) {
             echo call_user_func(self::$routes[$method][$action]);
         } else {
@@ -34,3 +44,4 @@ class Router
         }
     }
 }
+

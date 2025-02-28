@@ -7,9 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInit91d4a5d2a96550f684fd7af7c0e8e679
 {
     public static $files = array (
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -22,6 +23,7 @@ class ComposerStaticInit91d4a5d2a96550f684fd7af7c0e8e679
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Services\\' => 9,
         ),
         'R' => 
         array (
@@ -30,6 +32,15 @@ class ComposerStaticInit91d4a5d2a96550f684fd7af7c0e8e679
         'P' => 
         array (
             'PhpOption\\' => 10,
+            'Pagerfanta\\Twig\\' => 16,
+            'Pagerfanta\\Solarium\\' => 20,
+            'Pagerfanta\\Elastica\\' => 20,
+            'Pagerfanta\\Doctrine\\PHPCRODM\\' => 29,
+            'Pagerfanta\\Doctrine\\ORM\\' => 24,
+            'Pagerfanta\\Doctrine\\MongoDBODM\\' => 31,
+            'Pagerfanta\\Doctrine\\DBAL\\' => 25,
+            'Pagerfanta\\Doctrine\\Collections\\' => 32,
+            'Pagerfanta\\' => 11,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
         'M' => 
@@ -71,6 +82,10 @@ class ComposerStaticInit91d4a5d2a96550f684fd7af7c0e8e679
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
+        'Services\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Services',
+        ),
         'Routes\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Routes',
@@ -78,6 +93,42 @@ class ComposerStaticInit91d4a5d2a96550f684fd7af7c0e8e679
         'PhpOption\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'Pagerfanta\\Twig\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Twig',
+        ),
+        'Pagerfanta\\Solarium\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Solarium',
+        ),
+        'Pagerfanta\\Elastica\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Elastica',
+        ),
+        'Pagerfanta\\Doctrine\\PHPCRODM\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Doctrine/PHPCRODM',
+        ),
+        'Pagerfanta\\Doctrine\\ORM\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Doctrine/ORM',
+        ),
+        'Pagerfanta\\Doctrine\\MongoDBODM\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Doctrine/MongoDBODM',
+        ),
+        'Pagerfanta\\Doctrine\\DBAL\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Doctrine/DBAL',
+        ),
+        'Pagerfanta\\Doctrine\\Collections\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Adapter/Doctrine/Collections',
+        ),
+        'Pagerfanta\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pagerfanta/pagerfanta/lib/Core',
         ),
         'PHPMailer\\PHPMailer\\' => 
         array (

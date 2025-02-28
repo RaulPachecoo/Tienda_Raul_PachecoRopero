@@ -244,6 +244,23 @@ class Usuario
         }
     }
 
+    public function getByEmailAndPassword(string $email, string $password): mixed
+    {
+        try {
+            $select = $this->db->prepare("SELECT * FROM usuarios WHERE email = :email");
+            $select->bindValue(':email', $email, PDO::PARAM_STR);
+            $select->execute();
+            $user = $select->fetch(PDO::FETCH_OBJ);
+            if ($user && password_verify($password, $user->password)) {
+                return $user;
+            }
+            return false;
+        } catch (PDOException $e) {
+            error_log("Error al buscar usuario por email y contraseña: " . $e->getMessage());
+            return false;
+        }
+    }
+
     public function validarDatosRegistro(): array|bool
     {
         $this->nombre = filter_var($this->nombre, FILTER_SANITIZE_SPECIAL_CHARS);

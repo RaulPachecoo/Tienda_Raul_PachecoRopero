@@ -1,5 +1,5 @@
 <div class="container mt-5">
-    <h1 class="text-light text-center">Finalizar Pedido</h1>
+    <h1 class="text-light text-center">Formulario de Pago</h1>
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card mb-5 text-light shadow p-4" style="background-color: black;">
@@ -17,10 +17,15 @@
                         <input type="text" name="direccion" id="direccion" class="form-control bg-secondary text-light border-light" required>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Realizar Pedido</button>
+                        <button type="submit" class="btn btn-warning text-dark fw-bold">
+                            Realizar Pedido
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Agregar FontAwesome para el icono de PayPal -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

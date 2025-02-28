@@ -11,6 +11,20 @@
     <div class="container mt-5 mb-5">
         <h1 class="text-center mb-4">Crear Producto</h1>
 
+        <?php if (isset($mensaje)): ?>
+            <div class="alert alert-success">
+                <?= $mensaje ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($errores)): ?>
+            <div class="alert alert-danger">
+                <?php foreach ($errores as $error): ?>
+                    <p><?= $error ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
         <form action="<?= BASE_URL ?>Producto/crearProducto" method="POST" enctype="multipart/form-data" class="p-4">
 
             <div class="mb-3">
