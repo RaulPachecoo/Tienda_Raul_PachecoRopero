@@ -2,10 +2,13 @@
 session_start();
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/Lib/Router.php';
+require_once __DIR__ . '/Routes/Routes.php';
 
-// Cargar variables de entorno
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->safeLoad();
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../config');
+$dotenv->safeLoad(); // Use safeLoad to avoid exceptions if the file is not found
 
 // Obtener la ruta solicitada (sin parámetros GET)
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

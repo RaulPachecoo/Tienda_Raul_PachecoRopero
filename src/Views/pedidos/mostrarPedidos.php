@@ -23,6 +23,9 @@
                             <?php else: ?>
                                 <p class="mt-2 text-success">Este pedido ya ha sido enviado.</p>
                             <?php endif; ?>
+                            <?php if (isset($pedido['error'])): ?>
+                                <p class="mt-2 text-danger"><?= $pedido['error'] ?></p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

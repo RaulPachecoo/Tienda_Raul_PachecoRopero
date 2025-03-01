@@ -75,9 +75,8 @@
                     <h5>Enlaces Rápidos</h5>
                     <ul class="list-unstyled">
                         <li><a href="<?= BASE_URL ?>" class="text-white text-decoration-none">Inicio</a></li>
-                        <li><a href="<?= BASE_URL ?>Categoria/mostrarCategorias/" class="text-white text-decoration-none">Categorías</a></li>
                         <li><a href="<?= BASE_URL ?>Carrito/mostrarCarrito/" class="text-white text-decoration-none">Carrito</a></li>
-                        <li><a href="<?= BASE_URL ?>Contacto/" class="text-white text-decoration-none">Contacto</a></li>
+                        
                     </ul>
                 </div>
                 <div class="col-md-4 mb-3">

@@ -29,7 +29,9 @@ class Producto
     }
 
     /**
-     * Get the value of id
+     * Obtiene el valor del ID del producto.
+     * 
+     * @return int El ID del producto.
      */
     public function getId()
     {
@@ -37,9 +39,10 @@ class Producto
     }
 
     /**
-     * Set the value of id
-     *
-     * @return  self
+     * Establece el valor del ID del producto.
+     * 
+     * @param int $id El ID del producto.
+     * @return self Instancia del objeto Producto.
      */
     public function setId($id)
     {
@@ -48,10 +51,10 @@ class Producto
         return $this;
     }
 
-
-
     /**
-     * Get the value of categoriaId
+     * Obtiene el valor de la categoría del producto.
+     * 
+     * @return int El ID de la categoría del producto.
      */
     public function getCategoriaId()
     {
@@ -59,9 +62,10 @@ class Producto
     }
 
     /**
-     * Set the value of categoriaId
-     *
-     * @return  self
+     * Establece el valor de la categoría del producto.
+     * 
+     * @param int $categoriaId El ID de la categoría.
+     * @return self Instancia del objeto Producto.
      */
     public function setCategoriaId($categoriaId)
     {
@@ -71,7 +75,9 @@ class Producto
     }
 
     /**
-     * Get the value of nombre
+     * Obtiene el nombre del producto.
+     * 
+     * @return string El nombre del producto.
      */
     public function getNombre()
     {
@@ -79,9 +85,10 @@ class Producto
     }
 
     /**
-     * Set the value of nombre
-     *
-     * @return  self
+     * Establece el nombre del producto.
+     * 
+     * @param string $nombre El nombre del producto.
+     * @return self Instancia del objeto Producto.
      */
     public function setNombre($nombre)
     {
@@ -91,7 +98,9 @@ class Producto
     }
 
     /**
-     * Get the value of descripcion
+     * Obtiene la descripción del producto.
+     * 
+     * @return string La descripción del producto.
      */
     public function getDescripcion()
     {
@@ -99,9 +108,10 @@ class Producto
     }
 
     /**
-     * Set the value of descripcion
-     *
-     * @return  self
+     * Establece la descripción del producto.
+     * 
+     * @param string $descripcion La descripción del producto.
+     * @return self Instancia del objeto Producto.
      */
     public function setDescripcion($descripcion)
     {
@@ -111,7 +121,9 @@ class Producto
     }
 
     /**
-     * Get the value of precio
+     * Obtiene el precio del producto.
+     * 
+     * @return float El precio del producto.
      */
     public function getPrecio()
     {
@@ -119,9 +131,10 @@ class Producto
     }
 
     /**
-     * Set the value of precio
-     *
-     * @return  self
+     * Establece el precio del producto.
+     * 
+     * @param float $precio El precio del producto.
+     * @return self Instancia del objeto Producto.
      */
     public function setPrecio($precio)
     {
@@ -131,7 +144,9 @@ class Producto
     }
 
     /**
-     * Get the value of stock
+     * Obtiene la cantidad de stock del producto.
+     * 
+     * @return int La cantidad de stock del producto.
      */
     public function getStock()
     {
@@ -139,9 +154,10 @@ class Producto
     }
 
     /**
-     * Set the value of stock
-     *
-     * @return  self
+     * Establece la cantidad de stock del producto.
+     * 
+     * @param int $stock La cantidad de stock del producto.
+     * @return self Instancia del objeto Producto.
      */
     public function setStock($stock)
     {
@@ -151,7 +167,9 @@ class Producto
     }
 
     /**
-     * Get the value of oferta
+     * Obtiene la oferta asociada al producto.
+     * 
+     * @return string La oferta asociada al producto.
      */
     public function getOferta()
     {
@@ -159,9 +177,10 @@ class Producto
     }
 
     /**
-     * Set the value of oferta
-     *
-     * @return  self
+     * Establece la oferta asociada al producto.
+     * 
+     * @param string $oferta La oferta asociada al producto.
+     * @return self Instancia del objeto Producto.
      */
     public function setOferta($oferta)
     {
@@ -171,7 +190,9 @@ class Producto
     }
 
     /**
-     * Get the value of imagen
+     * Obtiene la imagen asociada al producto.
+     * 
+     * @return string La ruta de la imagen del producto.
      */
     public function getImagen()
     {
@@ -179,9 +200,10 @@ class Producto
     }
 
     /**
-     * Set the value of imagen
-     *
-     * @return  self
+     * Establece la imagen asociada al producto.
+     * 
+     * @param string $imagen La ruta de la imagen del producto.
+     * @return self Instancia del objeto Producto.
      */
     public function setImagen($imagen)
     {
@@ -191,7 +213,9 @@ class Producto
     }
 
     /**
-     * Get the value of fecha
+     * Obtiene la fecha de creación del producto.
+     * 
+     * @return DateTime La fecha de creación del producto.
      */
     public function getFecha()
     {
@@ -199,9 +223,10 @@ class Producto
     }
 
     /**
-     * Set the value of fecha
-     *
-     * @return  self
+     * Establece la fecha de creación del producto.
+     * 
+     * @param DateTime $fecha La fecha de creación del producto.
+     * @return self Instancia del objeto Producto.
      */
     public function setFecha($fecha)
     {
@@ -210,6 +235,11 @@ class Producto
         return $this;
     }
 
+    /**
+     * Obtiene todos los productos en la base de datos.
+     * 
+     * @return array Lista de productos.
+     */
     public  static function getAll(): array{
         $producto = new Producto(); 
         try {
@@ -223,8 +253,31 @@ class Producto
         }
     }
 
-    public function createProducto(string $nombre, string $descripcion, int $categoria, float $precio, int $stock, string $oferta, DateTime $fecha, string $imagen) {
+    /**
+     * Crea un nuevo producto en la base de datos.
+     * 
+     * @param string $nombre Nombre del producto.
+     * @param string $descripcion Descripción del producto.
+     * @param int $categoria ID de la categoría del producto.
+     * @param float $precio Precio del producto.
+     * @param int $stock Cantidad en stock del producto.
+     * @param string $oferta Oferta asociada al producto.
+     * @param DateTime $fecha Fecha de creación del producto.
+     * @param string $imagen Ruta de la imagen del producto.
+     * @return bool True si la creación fue exitosa, false si hubo error.
+     */
+    public function createProducto(string $nombre, string $descripcion, int $categoria, float $precio, int $stock, string $oferta, DateTime $fecha, string $imagen): bool {
         try {
+            $stmt = $this->db->prepare("SELECT 1 FROM productos WHERE nombre = :nombre");
+            $stmt->bindValue(':nombre', $nombre, PDO::PARAM_STR);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                $stmt->closeCursor();
+                return false; // El producto ya existe
+            }
+
+            $stmt->closeCursor();
             $this->checkAndCreateImageDir();
             $insert = $this->db->prepare(
                 "INSERT INTO productos (categoria_id, nombre, descripcion, precio, stock, oferta, fecha, imagen) 
@@ -249,6 +302,12 @@ class Producto
         }
     }
 
+    /**
+     * Obtiene productos por categoría.
+     * 
+     * @param int $categoriaId ID de la categoría.
+     * @return array|false Lista de productos o false si hay error.
+     */
     public static function getProductosByCategoria(int $categoriaId): array|false {
         $producto = new self();
         try {
@@ -266,6 +325,12 @@ class Producto
         }
     }
 
+    /**
+     * Obtiene el stock de un producto por su ID.
+     * 
+     * @param int $id ID del producto.
+     * @return array|false El stock del producto o false si hay error.
+     */
     public function getStockById(int $id): array|false {
         try {
             $stmt = $this->db->prepare(
@@ -281,6 +346,13 @@ class Producto
         }
     }
 
+    /**
+     * Actualiza el stock de un producto.
+     * 
+     * @param int $id ID del producto.
+     * @param int $nuevoStock Nuevo valor de stock.
+     * @return bool True si la actualización fue exitosa, false si hubo error.
+     */
     public function updateStock(int $id, int $nuevoStock): bool {
         try {
             $stmt = $this->db->prepare(
@@ -296,6 +368,20 @@ class Producto
         }
     }
 
+    /**
+     * Actualiza los detalles de un producto.
+     * 
+     * @param int $id ID del producto.
+     * @param int $categoria ID de la categoría.
+     * @param string $nombre Nombre del producto.
+     * @param string $descripcion Descripción del producto.
+     * @param float $precio Precio del producto.
+     * @param int $stock Stock del producto.
+     * @param string $oferta Oferta del producto.
+     * @param string $fecha Fecha de actualización del producto.
+     * @param string $imagen Imagen del producto.
+     * @return bool True si la actualización fue exitosa, false si hubo error.
+     */
     public function updateProducto(int $id, int $categoria, string $nombre, string $descripcion, float $precio, int $stock, string $oferta, string $fecha, string $imagen): bool {
         try {
             $this->checkAndCreateImageDir();
@@ -320,6 +406,12 @@ class Producto
         }
     }
 
+    /**
+     * Obtiene la imagen de un producto por su ID.
+     * 
+     * @param int $id ID del producto.
+     * @return mixed La imagen del producto o false si hubo error.
+     */
     public function getImagenById(int $id): mixed {
         try {
             $stmt = $this->db->prepare("SELECT imagen FROM productos WHERE id = :id");
@@ -333,6 +425,12 @@ class Producto
         }
     }
 
+    /**
+     * Obtiene los detalles de un producto por su ID.
+     * 
+     * @param int $id ID del producto.
+     * @return mixed Los detalles del producto o false si hubo error.
+     */
     public static function getProductoById(int $id): mixed {
         $producto = new Producto(); 
         try {
@@ -348,6 +446,12 @@ class Producto
         }
     }
 
+    /**
+     * Elimina un producto por su ID.
+     * 
+     * @param int $id ID del producto.
+     * @return bool True si la eliminación fue exitosa, false si hubo error.
+     */
     public function deleteProducto(int $id): bool {
         try {
             $stmt = $this->db->prepare("DELETE FROM productos WHERE id = :id");
@@ -362,6 +466,9 @@ class Producto
         }
     }
 
+    /**
+     * Verifica y crea el directorio para las imágenes si no existe.
+     */
     private function checkAndCreateImageDir() {
         $imageDir = __DIR__ . '/../../public/imgs';
         if (!is_dir($imageDir)) {
@@ -369,6 +476,13 @@ class Producto
         }
     }
 
+    /**
+     * Obtiene productos paginados.
+     * 
+     * @param int $currentPage Página actual.
+     * @param int $maxPerPage Número máximo de productos por página.
+     * @return Pagerfanta Objeto Pagerfanta con los productos paginados.
+     */
     public static function getPaginatedProductos(int $currentPage, int $maxPerPage): Pagerfanta {
         $producto = new Producto();
         try {
@@ -387,6 +501,14 @@ class Producto
         }
     }
 
+    /**
+     * Obtiene productos paginados por categoría.
+     * 
+     * @param int $categoriaId ID de la categoría.
+     * @param int $currentPage Página actual.
+     * @param int $maxPerPage Número máximo de productos por página.
+     * @return Pagerfanta Objeto Pagerfanta con los productos paginados.
+     */
     public static function getPaginatedProductosByCategoria(int $categoriaId, int $currentPage, int $maxPerPage): Pagerfanta {
         $producto = new Producto();
         try {

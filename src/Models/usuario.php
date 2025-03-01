@@ -6,7 +6,6 @@ use Lib\DBConnection;
 use PDO;
 use PDOException;
 
-
 class Usuario
 {
     private string|null $id;
@@ -17,6 +16,7 @@ class Usuario
     private string $rol;
     private DBConnection $db;
 
+    // Constructor para inicializar las propiedades del usuario
     public function __construct(string|null $id, string $nombre, string $apellidos, string $email, string $password, string $rol)
     {
         $this->id = $id;
@@ -25,10 +25,10 @@ class Usuario
         $this->email = $email;
         $this->password = $password;
         $this->rol = $rol;
-        $this->db = new DBConnection();
+        $this->db = new DBConnection(); // Inicia la conexión a la base de datos
     }
 
-
+    // Métodos getter y setter para las propiedades del usuario
 
     /**
      * Get the value of id
@@ -46,7 +46,6 @@ class Usuario
     public function setId($id)
     {
         $this->id = $id;
-
         return $this;
     }
 
@@ -66,7 +65,6 @@ class Usuario
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-
         return $this;
     }
 
@@ -86,7 +84,6 @@ class Usuario
     public function setApellidos($apellidos)
     {
         $this->apellidos = $apellidos;
-
         return $this;
     }
 
@@ -106,7 +103,6 @@ class Usuario
     public function setEmail($email)
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -126,7 +122,6 @@ class Usuario
     public function setPassword($password)
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -146,10 +141,10 @@ class Usuario
     public function setRol($rol)
     {
         $this->rol = $rol;
-
         return $this;
     }
 
+    // Método para crear un objeto Usuario a partir de un array de datos
     public static function fromArray(array $data)
     {
         return new Usuario(
@@ -162,11 +157,13 @@ class Usuario
         );
     }
 
+    // Método para cerrar la conexión a la base de datos
     public function desconecta()
     {
         $this->db->close();
     }
 
+    // Obtener un usuario por su ID
     public function getById(int $id): mixed
     {
         try {
@@ -187,7 +184,7 @@ class Usuario
         }
     }
 
-
+    // Crear un nuevo usuario en la base de datos
     public function createUsuario()
     {
         $id = null;
@@ -218,6 +215,7 @@ class Usuario
         return $result;
     }
 
+    // Método para autenticar a un usuario (login)
     public function login(): mixed
     {
         try {
@@ -231,6 +229,7 @@ class Usuario
         return false;
     }
 
+    // Buscar un usuario por su email
     public function getByEmail(string $email): mixed
     {
         try {
@@ -244,6 +243,7 @@ class Usuario
         }
     }
 
+    // Buscar un usuario por su email y contraseña
     public function getByEmailAndPassword(string $email, string $password): mixed
     {
         try {
@@ -261,6 +261,7 @@ class Usuario
         }
     }
 
+    // Validar los datos del registro de un usuario (nombre, apellidos, email, contraseña)
     public function validarDatosRegistro(): array|bool
     {
         $this->nombre = filter_var($this->nombre, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -291,6 +292,7 @@ class Usuario
         return empty($errores) ? true : $errores;
     }
 
+    // Validar los datos para el login (email y contraseña)
     public function validarDatosLogin(): array|bool
     {
         $errores = [];
@@ -319,6 +321,7 @@ class Usuario
         return empty($errores) ? true : $errores;
     }
 
+    // Modificar los datos de un usuario, excepto el rol
     public function modificarDatosUsuario(int $usuarioId, array $datos): bool
     {
         // Preparar la consulta para modificar solo los datos permitidos (sin modificar el rol)
@@ -341,9 +344,9 @@ class Usuario
         }
     }
 
+    // Modificar los datos de un usuario incluyendo el rol (solo accesible por un admin)
     public function modificarDatosAdmin(int $usuarioId, array $datos): bool
     {
-
         // Preparar la consulta para modificar todos los datos, incluyendo el rol
         $query = "UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, email = :email, rol = :rol WHERE id = :id";
 

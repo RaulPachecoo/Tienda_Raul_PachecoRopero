@@ -2,7 +2,7 @@
     <h1 class="text-light text-center">Modificar Datos de Usuario</h1>
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card mb-5 text-light shadow p-4" style="background-color: black;">
+            <div class="card mb-5 text-light p-4" style="background-color: black;">
 
                 <!-- Mostrar mensajes de éxito o error -->
                 <?php if (isset($_SESSION['mensaje'])): ?>
