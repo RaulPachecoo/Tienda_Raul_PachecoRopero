@@ -62,6 +62,8 @@
 
     - error
 
+8. ALOJAMIENTO WEB
+
 # 1. ESTRUCTURA DEL PROYECTO
 
 La estructura de mi proyecto está organizada de manera modular y clara, permitiendo que las distintas partes del sistema estén separadas y sea más fácil mantener y escalar el proyecto. Estas son cada una de las carpetas y archivos principales:
@@ -1442,3 +1444,44 @@ La vista de **error** muestra un mensaje cuando ocurre un problema en la aplicac
 - **Diseño centrado** para una mejor experiencia de usuario.
 
 Esta vista proporciona una forma clara y sencilla de manejar errores en la aplicación.
+
+
+# 8. ALOJAMIENTO WEB
+
+Para **publicar un proyecto en InfinityFree**, sigue estos pasos:
+
+## 1. Regístrate en InfinityFree
+- Ve a [InfinityFree](https://www.infinityfree.net) y crea una cuenta gratuita.
+
+## 2. Crea una Cuenta de Hosting
+- Después de registrarte, accede a tu cuenta y selecciona **"Create Account"** para crear un nuevo plan de hosting.
+- Elige un **subdominio gratuito** (por ejemplo, **tusitio.epizy.com**) o usa un **dominio personalizado** si ya tienes uno.
+
+## 3. Accede al Panel de Control (cPanel)
+- Después de crear tu cuenta, entra en el **cPanel** de InfinityFree desde tu área de usuario.
+- Aquí podrás gestionar tu sitio, bases de datos, correos y otros servicios.
+
+## 4. Sube los Archivos del Proyecto
+- En el **cPanel**, ve a la sección de **"File Manager"** (Administrador de Archivos).
+- **Sube** los archivos de tu proyecto (HTML, CSS, JavaScript, imágenes, PHP, etc.) a la carpeta `htdocs`.
+
+Si prefieres, también puedes usar **FTP** para transferir los archivos desde tu computadora a tu cuenta de InfinityFree.
+
+## 5. Configura las Bases de Datos (si es necesario)
+- Si tu proyecto usa bases de datos (por ejemplo, MySQL), ve a la sección **"MySQL Databases"** en el cPanel.
+- **Crea** una nueva base de datos y usuario, y asigna los privilegios necesarios.
+- Actualiza tu proyecto para conectar con la nueva base de datos usando las credenciales de InfinityFree.
+
+## 6. Configura el Dominio (si usas uno personalizado)
+- Si tienes un dominio propio, ve a la sección **"Addon Domains"** en el cPanel.
+- Añade tu dominio personalizado y configura los **registros DNS** en tu proveedor de dominio para que apunten a los servidores de InfinityFree.
+
+## 7. Prueba tu Sitio Web
+- Una vez que hayas subido todos los archivos y configurado la base de datos, abre tu navegador y visita la URL de tu subdominio (o dominio personalizado) para asegurarte de que todo funcione correctamente.
+
+## 8. Mantenimiento y Actualizaciones
+- Si necesitas actualizar el sitio, simplemente sube los nuevos archivos a la misma carpeta `htdocs`.
+
+Mi proyecto se encuentra alojado en la siguiente dirección: [carshopraulpacheco.infinityfreeapp.com](https://dash.infinityfree.com/accounts/if0_38417539/domains/carshopraulpacheco.infinityfreeapp.com) 
+
+![Alojamiento](https://files.catbox.moe/6grhhv.png "Alojamiento")
