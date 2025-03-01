@@ -3,7 +3,7 @@
 namespace Controllers;
 
 use Lib\Pages;
-use Models\Carrito;
+use Models\carrito;
 use Models\Producto;
 use Controllers\UsuarioController;
 

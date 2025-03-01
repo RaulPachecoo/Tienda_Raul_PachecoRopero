@@ -38,9 +38,9 @@ class DBConnection {
                 $opciones  // Opciones de configuración
             );
         } catch (PDOException $e) {
-            // En caso de error de conexión, se registra el error
-            error_log("Error de conexión: " . $e->getMessage());
-            return null;  // Retorna null si no se pudo conectar
+            // Mostrar errores detallados
+            echo "Error de conexión: " . $e->getMessage() . "<br>";
+            return null;
         }
     }
 
