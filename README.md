@@ -181,19 +181,16 @@ Valida la autenticación de un usuario comparando su email y contraseña.
 ### 8. `getByEmail`
 Busca un usuario en la base de datos por su email.
 
-### 9. `getByEmailAndPassword`
-Busca un usuario por email y contraseña, y los verifica.
-
-### 10. `validarDatosRegistro`
+### 9. `validarDatosRegistro`
 Valida los datos de registro del usuario (nombre, apellidos, email y contraseña).
 
-### 11. `validarDatosLogin`
+### 10. `validarDatosLogin`
 Valida los datos para el login (email y contraseña).
 
-### 12. `modificarDatosUsuario`
+### 11. `modificarDatosUsuario`
 Permite modificar los datos de un usuario, excluyendo su rol.
 
-### 13. `modificarDatosAdmin`
+### 12. `modificarDatosAdmin`
 Permite modificar todos los datos de un usuario (incluido el rol), solo accesible por un administrador.
 
 ## Funcionalidad de seguridad
