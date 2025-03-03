@@ -55,6 +55,12 @@
                         <input type="password" class="form-control bg-secondary text-light border-light" id="password" name="data[password]" placeholder="Dejar en blanco si no desea cambiarla">
                     </div>
 
+                    <!-- Campo de confirmación de contraseña (opcional) -->
+                    <div class="mb-3">
+                        <label for="password_confirm" class="form-label">Confirmar Contraseña (opcional)</label>
+                        <input type="password" class="form-control bg-secondary text-light border-light" id="password_confirm" name="data[password_confirm]" placeholder="Dejar en blanco si no desea cambiarla">
+                    </div>
+
                     <!-- Campo rol, solo visible para administradores -->
                     <?php if ($_SESSION['login']->rol === 'admin'): ?>
                     <div class="mb-3">

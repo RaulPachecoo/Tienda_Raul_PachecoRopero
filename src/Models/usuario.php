@@ -187,7 +187,6 @@ class Usuario
     // Crear un nuevo usuario en la base de datos
     public function createUsuario()
     {
-        $id = null;
         $nombre = $this->nombre;
         $apellidos = $this->apellidos;
         $email = $this->email;
@@ -239,24 +238,6 @@ class Usuario
             return $select->rowCount() === 1 ? $select->fetch(PDO::FETCH_OBJ) : false;
         } catch (PDOException $e) {
             error_log("Error al buscar usuario por email: " . $e->getMessage());
-            return false;
-        }
-    }
-
-    // Buscar un usuario por su email y contraseña
-    public function getByEmailAndPassword(string $email, string $password): mixed
-    {
-        try {
-            $select = $this->db->prepare("SELECT * FROM usuarios WHERE email = :email");
-            $select->bindValue(':email', $email, PDO::PARAM_STR);
-            $select->execute();
-            $user = $select->fetch(PDO::FETCH_OBJ);
-            if ($user && password_verify($password, $user->password)) {
-                return $user;
-            }
-            return false;
-        } catch (PDOException $e) {
-            error_log("Error al buscar usuario por email y contraseña: " . $e->getMessage());
             return false;
         }
     }
@@ -325,7 +306,14 @@ class Usuario
     public function modificarDatosUsuario(int $usuarioId, array $datos): bool
     {
         // Preparar la consulta para modificar solo los datos permitidos (sin modificar el rol)
-        $query = "UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, email = :email WHERE id = :id";
+        $query = "UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, email = :email";
+
+        // Si se proporciona una nueva contraseña, agregarla a la consulta
+        if (!empty($datos['password'])) {
+            $query .= ", password = :password";
+        }
+
+        $query .= " WHERE id = :id";
 
         try {
             // Preparamos la consulta
@@ -335,6 +323,11 @@ class Usuario
             $stmt->bindValue(':apellidos', $datos['apellidos'], PDO::PARAM_STR);
             $stmt->bindValue(':email', $datos['email'], PDO::PARAM_STR);
             $stmt->bindValue(':id', $usuarioId, PDO::PARAM_INT);
+
+            // Vincular la nueva contraseña si se proporciona
+            if (!empty($datos['password'])) {
+                $stmt->bindValue(':password', password_hash($datos['password'], PASSWORD_BCRYPT, ['cost' => 4]), PDO::PARAM_STR);
+            }
 
             // Ejecutar la consulta
             return $stmt->execute();
@@ -348,7 +341,14 @@ class Usuario
     public function modificarDatosAdmin(int $usuarioId, array $datos): bool
     {
         // Preparar la consulta para modificar todos los datos, incluyendo el rol
-        $query = "UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, email = :email, rol = :rol WHERE id = :id";
+        $query = "UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, email = :email, rol = :rol";
+
+        // Si se proporciona una nueva contraseña, agregarla a la consulta
+        if (!empty($datos['password'])) {
+            $query .= ", password = :password";
+        }
+
+        $query .= " WHERE id = :id";
 
         try {
             // Preparamos la consulta
@@ -359,6 +359,11 @@ class Usuario
             $stmt->bindValue(':email', $datos['email'], PDO::PARAM_STR);
             $stmt->bindValue(':rol', $datos['rol'], PDO::PARAM_STR);
             $stmt->bindValue(':id', $usuarioId, PDO::PARAM_INT);
+
+            // Vincular la nueva contraseña si se proporciona
+            if (!empty($datos['password'])) {
+                $stmt->bindValue(':password', password_hash($datos['password'], PASSWORD_BCRYPT, ['cost' => 4]), PDO::PARAM_STR);
+            }
 
             // Ejecutar la consulta
             return $stmt->execute();
