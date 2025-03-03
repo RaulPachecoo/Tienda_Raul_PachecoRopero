@@ -39,7 +39,7 @@ class CategoriaController{
                 $this->pages->render('categoria/crearCategoria', ['errores' => $errores]);
                 return;
             }
-            $categoria = trim($_POST['categoria']);  // Elimina los espacios adicionales
+            $categoria = trim(string: $_POST['categoria']);  // Elimina los espacios adicionales
 
             // Valida el formato del nombre de la categoría
             if (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', $categoria)) {
@@ -88,7 +88,7 @@ class CategoriaController{
     }
 
     // Método para mostrar todas las categorías disponibles
-    public function showCategorias() {
+    public function showCategorias(): void {
         $categorias = Categoria::getAll();  // Obtiene todas las categorías
         if ($categorias) {
             // Si hay categorías, las muestra

@@ -170,7 +170,7 @@ class ProductoController
         // Si hay una nueva imagen, la subimos al servidor.
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
             $imagen = $_FILES['imagen'];
-            $nomArchivo = uniqid() . '_' . $imagen['name'];
+            $nomArchivo = '_' . $imagen['name'];
             $rutaDestino = __DIR__ . '/../../public/imgs/' . $nomArchivo;
             if (!move_uploaded_file($imagen['tmp_name'], $rutaDestino)) {
                 $errores = ["Error al subir la imagen."];

@@ -55,22 +55,10 @@ class DBConnection {
         return $this->resultado !== false;
     }
 
-    // Extrae un solo registro del resultado de la consulta
-    public function extraer_registro(): array|false {
-        // Si hay un resultado, se extrae un solo registro, si no, se retorna false
-        return $this->resultado ? $this->resultado->fetch() : false;
-    }
-
     // Extrae todos los registros del resultado de la consulta
     public function extraer_todos(): array {
         // Si hay un resultado, se extraen todos los registros, si no, se retorna un array vacío
         return $this->resultado ? $this->resultado->fetchAll() : [];
-    }
-
-    // Devuelve la cantidad de filas afectadas por la última consulta
-    public function filasAfectadas(): int {
-        // Si hay un resultado, se retorna la cantidad de filas afectadas, sino retorna 0
-        return $this->resultado ? $this->resultado->rowCount() : 0;
     }
 
     // Cierra la conexión y limpia el resultado
@@ -88,11 +76,5 @@ class DBConnection {
     // Devuelve la conexión PDO actual
     public function getConnection(): ?PDO {
         return $this->conexion;
-    }
-
-    // Devuelve el último ID insertado en la base de datos
-    public function lastInsertId(): ?string {
-        // Si hay conexión, retorna el último ID insertado, sino retorna null
-        return $this->conexion ? $this->conexion->lastInsertId() : null;
     }
 }
